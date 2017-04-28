@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tryalgo.horn_sat &#8212; tryalgo 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tryalgo.horn_sat</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Solving Horn SAT</span>
+<span class="c1"># christoph dürr - 2016</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">clauses are numbered starting from 0</span>
+<span class="sd">variables are strings (identifier)</span>
+
+<span class="sd">solution  : set of variables that are set to true</span>
+<span class="sd">posvar_in_clause : maps clause to the unique positive variable in clause (or None)</span>
+<span class="sd">clause_with_negvar : maps variable v to all clauses that contain not(v)</span>
+
+<span class="sd">every clause has a score: number of its negative variables that are not in solution sol</span>
+<span class="sd">pool : maps score to clauses of that score</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<div class="viewcode-block" id="read"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.horn_sat.read">[docs]</a><span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; reads a Horn SAT formula from a text file</span>
+
+<span class="sd">    :file format:</span>
+<span class="sd">    # comment</span>
+<span class="sd">    A     # clause with unique positive literal</span>
+<span class="sd">    :- A  # clause with unique negative literal</span>
+<span class="sd">    A :- B, C, D # clause where A is positive and B,C,D negative</span>
+<span class="sd">    # variables are strings without spaces</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">formula</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;#&quot;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">lit</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:-&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lit</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">posvar</span> <span class="o">=</span> <span class="n">lit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">negvars</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">lit</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+            <span class="n">posvar</span> <span class="o">=</span> <span class="n">lit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">posvar</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">posvar</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">negvars</span> <span class="o">=</span> <span class="n">lit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">negvars</span><span class="p">)):</span>
+                <span class="n">negvars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">negvars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">formula</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">posvar</span><span class="p">,</span> <span class="n">negvars</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">formula</span></div>
+
+
+<div class="viewcode-block" id="horn_sat"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.horn_sat.horn_sat">[docs]</a><span class="k">def</span> <span class="nf">horn_sat</span><span class="p">(</span><span class="n">formula</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Solving a HORN Sat formula</span>
+
+<span class="sd">    :param formula: list of couple(posvar, negvars).</span>
+<span class="sd">                    negvars is a list of the negative variables and can be empty.</span>
+<span class="sd">                    posvar is the positive variable and can be None.</span>
+<span class="sd">                    Variables can be any hashable objects, as integers or strings</span>
+<span class="sd">                    for example.</span>
+<span class="sd">    :returns: None if formula is not satisfiable, else a minimal set of variables</span>
+<span class="sd">              that have to be set to true in order to satisfy the formula.</span>
+<span class="sd">    :complexity: linear</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># --- construct data structures</span>
+    <span class="n">CLAUSES</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">formula</span><span class="p">))</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CLAUSES</span><span class="p">]</span>                <span class="c1"># number of negative vars that are not yet in solution</span>
+    <span class="n">posvar_in_clause</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CLAUSES</span><span class="p">]</span>  <span class="c1"># the unique positive variable of a clause (if any)</span>
+    <span class="n">clauses_with_negvar</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>      <span class="c1"># all clauses where a variable appears negatively</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CLAUSES</span><span class="p">:</span>
+        <span class="n">posvar</span><span class="p">,</span> <span class="n">negvars</span> <span class="o">=</span> <span class="n">formula</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="n">score</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">negvars</span><span class="p">))</span>            <span class="c1"># do not count twice repeated negative variables</span>
+        <span class="n">posvar_in_clause</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">posvar</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">negvars</span><span class="p">:</span>
+            <span class="n">clauses_with_negvar</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="p">[</span><span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>   <span class="c1"># create the pool</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CLAUSES</span><span class="p">:</span>
+        <span class="n">pool</span><span class="p">[</span><span class="n">score</span><span class="p">[</span><span class="n">c</span><span class="p">]]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>                   <span class="c1"># pool[s] = set of clauses with score s</span>
+
+    <span class="c1"># --- solve Horn SAT formula</span>
+    <span class="n">solution</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>                            <span class="c1"># contains all variables set to True</span>
+    <span class="k">while</span> <span class="n">pool</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">pool</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>                    <span class="c1"># arbitrary zero score clause</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">posvar_in_clause</span><span class="p">[</span><span class="n">curr</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>                           <span class="c1"># formula is not satisfiable</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">solution</span> <span class="ow">or</span> <span class="n">curr</span> <span class="ow">in</span> <span class="n">clauses_with_negvar</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+            <span class="k">continue</span>                            <span class="c1"># clause is already satisfied</span>
+        <span class="n">solution</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clauses_with_negvar</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>        <span class="c1"># update score</span>
+            <span class="n">pool</span><span class="p">[</span><span class="n">score</span><span class="p">[</span><span class="n">c</span><span class="p">]]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">score</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">pool</span><span class="p">[</span><span class="n">score</span><span class="p">[</span><span class="n">c</span><span class="p">]]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>               <span class="c1"># change c to lower score in pool</span>
+    <span class="k">return</span> <span class="n">solution</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">sol</span> <span class="o">=</span> <span class="n">horn_sat</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No solution&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Minimal solution:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sol</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_white.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Christoph Dürr and Jill-Jênn Vie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

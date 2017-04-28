@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tryalgo.graph &#8212; tryalgo 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tryalgo.graph</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Reading graphs from files and writing into files</span>
+<span class="c1"># jill-jênn vie et christoph dürr - 2015</span>
+
+
+<div class="viewcode-block" id="readval"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.readval">[docs]</a><span class="k">def</span> <span class="nf">readval</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">ty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads a line from file with an item of type ty</span>
+
+<span class="sd">    :param file: input stream, for example sys.stdin</span>
+<span class="sd">    :param ty: a type, for example int</span>
+<span class="sd">    :returns: an element of type ty</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ty</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="readtab"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.readtab">[docs]</a><span class="k">def</span> <span class="nf">readtab</span><span class="p">(</span><span class="n">fi</span><span class="p">,</span> <span class="n">ty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads a line from file with a space separated list</span>
+<span class="sd">       of items of type ty</span>
+
+<span class="sd">    :param file: input stream, for example sys.stdin</span>
+<span class="sd">    :param ty: a type, for example int</span>
+<span class="sd">    :returns: a tuple with elements of type ty</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">ty</span><span class="p">,</span> <span class="n">fi</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span></div>
+
+
+<div class="viewcode-block" id="read_graph"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.read_graph">[docs]</a><span class="k">def</span> <span class="nf">read_graph</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">weighted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read a graph from a text file</span>
+
+<span class="sd">    :param filename: plain text file. All numbers are separated by space.</span>
+<span class="sd">              Starts with a line containing n (#vertices) and m (#edges).</span>
+<span class="sd">              Then m lines follow, for each edge.</span>
+<span class="sd">              Vertices are numbered from 0 to n-1.</span>
+<span class="sd">              Line for unweighted edge u,v contains two integers u, v.</span>
+<span class="sd">              Line for weighted edge u,v contains three integers u, v, w[u,v].</span>
+
+<span class="sd">    :param directed: true for a directed graph, false for undirected</span>
+<span class="sd">    :param weighted: true for an edge weighted graph</span>
+<span class="sd">    :returns: graph in listlist format, possibly followed by weight matrix</span>
+<span class="sd">    :complexity: O(n + m) for unweighted graph,</span>
+<span class="sd">                 :math:`O(n^2)` for weighted graph</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>         <span class="c1"># ignore leading comments</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="n">nb_nodes</span><span class="p">,</span> <span class="n">nb_edges</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_nodes</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">weighted</span><span class="p">:</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="p">[[</span><span class="n">default_weight</span><span class="p">]</span> <span class="o">*</span> <span class="n">nb_nodes</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_nodes</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_nodes</span><span class="p">):</span>
+                <span class="n">weight</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_edges</span><span class="p">):</span>
+                <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">readtab</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+                <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="n">weight</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">directed</span><span class="p">:</span>
+                    <span class="n">graph</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+                    <span class="n">weight</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+            <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">weight</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_edges</span><span class="p">):</span>
+                <span class="c1"># si le fichier contient des poids, ils seront ignorés</span>
+                <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">readtab</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">directed</span><span class="p">:</span>
+                    <span class="n">graph</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<div class="viewcode-block" id="write_graph"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.write_graph">[docs]</a><span class="k">def</span> <span class="nf">write_graph</span><span class="p">(</span><span class="n">dotfile</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">node_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">arc_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">node_mark</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span> <span class="n">arc_mark</span><span class="o">=</span><span class="nb">set</span><span class="p">()):</span>
+    <span class="sd">&quot;&quot;&quot;Writes a graph to a file in the DOT format</span>
+
+<span class="sd">    :param dotfile: the filename.</span>
+<span class="sd">    :param graph: directed graph in listlist or listdict format</span>
+<span class="sd">    :param directed: true if graph is directed, false if undirected</span>
+<span class="sd">    :param weight: in matrix format or same listdict graph or None</span>
+<span class="sd">    :param node_label: vertex label table or None</span>
+<span class="sd">    :param arc_label: arc label matrix or None</span>
+<span class="sd">    :param comment: comment string for the dot file or None</span>
+<span class="sd">    :param node_mark: set of nodes to be shown in gray</span>
+<span class="sd">    :param arc_marc: set of arcs to be shown in red</span>
+<span class="sd">    :complexity: `O(|V| + |E|)`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dotfile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">directed</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;digraph G{</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;graph G{</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">comment</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;label=&quot;</span><span class="si">%s</span><span class="s1">&quot;;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">comment</span><span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+        <span class="c1">#                              -- vertices</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">V</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node_mark</span> <span class="ow">and</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">node_mark</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> [style=filled, color=&quot;lightgrey&quot;, &#39;</span> <span class="o">%</span> <span class="n">u</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> [&#39;</span> <span class="o">%</span> <span class="n">u</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node_label</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;label=&quot;</span><span class="si">%u</span><span class="s1"> [</span><span class="si">%s</span><span class="s1">]&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">node_label</span><span class="p">[</span><span class="n">u</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;shape=circle, label=&quot;</span><span class="si">%u</span><span class="s1">&quot;];</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">u</span><span class="p">)</span>
+        <span class="c1">#                              -- edges</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arc_mark</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">arc_mark</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">arc_mark</span><span class="p">[</span><span class="n">u</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">V</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">V</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">directed</span> <span class="ow">and</span> <span class="n">u</span> <span class="o">&gt;</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">continue</span>   <span class="c1"># don&#39;t show twice the edge</span>
+                <span class="k">if</span> <span class="n">arc_label</span> <span class="ow">and</span> <span class="n">arc_label</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>   <span class="c1"># suppress arcs with no label</span>
+                <span class="k">if</span> <span class="n">directed</span><span class="p">:</span>
+                    <span class="n">arc</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> -&gt; </span><span class="si">%d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">arc</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> -- </span><span class="si">%d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">arc_mark</span> <span class="ow">and</span> <span class="p">(</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">u</span><span class="p">)</span> <span class="ow">in</span> <span class="n">arc_mark</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">directed</span> <span class="ow">and</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">arc_mark</span><span class="p">)</span> <span class="p">):</span>
+                    <span class="n">pen</span> <span class="o">=</span> <span class="s1">&#39;color=&quot;red&quot;&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pen</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">if</span> <span class="n">arc_label</span><span class="p">:</span>
+                    <span class="n">tag</span> <span class="o">=</span> <span class="s1">&#39;label=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">arc_label</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">if</span> <span class="n">tag</span> <span class="ow">and</span> <span class="n">pen</span><span class="p">:</span>
+                    <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">arc</span> <span class="o">+</span> <span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="n">tag</span> <span class="o">+</span> <span class="n">sep</span> <span class="o">+</span> <span class="n">pen</span> <span class="o">+</span> <span class="s2">&quot;];</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># snip{ tree_representations</span>
+<div class="viewcode-block" id="tree_prec_to_adj"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.tree_prec_to_adj">[docs]</a><span class="k">def</span> <span class="nf">tree_prec_to_adj</span><span class="p">(</span><span class="n">prec</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transforms a tree given as predecessor table into adjacency list form</span>
+
+<span class="sd">    :param prec: predecessor table representing a tree, prec[u] == v iff u is descendant of v,</span>
+<span class="sd">                 except for the root where prec[root] == root</span>
+<span class="sd">    :param root: root vertex of the tree</span>
+<span class="sd">    :returns: undirected graph in listlist representation</span>
+<span class="sd">    :complexity: linear</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prec</span><span class="p">)</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="p">[[</span><span class="n">prec</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>   <span class="c1"># ajouter les prédécesseurs</span>
+    <span class="n">graph</span><span class="p">[</span><span class="n">root</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>                      <span class="c1"># ajouter les descendants</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="o">!=</span> <span class="n">root</span><span class="p">:</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">prec</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<div class="viewcode-block" id="tree_adj_to_prec"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.tree_adj_to_prec">[docs]</a><span class="k">def</span> <span class="nf">tree_adj_to_prec</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transforms a tree given as adjacency list into predecessor table form.</span>
+<span class="sd">    if graph is not a tree: will return a DFS spanning tree</span>
+
+<span class="sd">    :param graph: directed graph in listlist or listdict format</span>
+<span class="sd">    :returns: tree in predecessor table representation</span>
+<span class="sd">    :complexity: linear</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prec</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="n">prec</span><span class="p">[</span><span class="n">root</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span>            <span class="c1"># marquer pour ne pas revisiter la racine</span>
+    <span class="n">to_visit</span> <span class="o">=</span> <span class="p">[</span><span class="n">root</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">to_visit</span><span class="p">:</span>              <span class="c1"># parcours DFS</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">to_visit</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">prec</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">prec</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
+                <span class="n">to_visit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neighbor</span><span class="p">)</span>
+    <span class="n">prec</span><span class="p">[</span><span class="n">root</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>            <span class="c1"># mettre la marque standard pour la racine</span>
+    <span class="k">return</span> <span class="n">prec</span></div>
+<span class="c1"># snip}</span>
+
+
+<span class="c1"># snip{ add_reverse_arcs</span>
+<div class="viewcode-block" id="add_reverse_arcs"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.add_reverse_arcs">[docs]</a><span class="k">def</span> <span class="nf">add_reverse_arcs</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">capac</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility function for flow algorithms that need for every arc (u,v),</span>
+<span class="sd">    the existence of an (v,u) arc, by default with zero capacity.</span>
+<span class="sd">    graph can be in adjacency list, possibly with capacity matrix capac.</span>
+<span class="sd">    or graph can be in adjacency dictionary, then capac parameter is ignored.</span>
+
+<span class="sd">    :param capac: arc capacity matrix</span>
+<span class="sd">    :param graph: in listlist representation, or in listdict representation, in this case capac is ignored</span>
+<span class="sd">    :complexity: linear</span>
+<span class="sd">    :returns: nothing, but graph is modified</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                    <span class="n">graph</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">capac</span><span class="p">:</span>
+                        <span class="n">capac</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span>
+                    <span class="n">graph</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
+<span class="c1"># snip}</span>
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># transformations between different graph representations</span>
+
+<span class="c1"># listlist is an adjacency list G,</span>
+<span class="c1">#        where G[u] is the list of vertices v such that there is an arc (u,v)</span>
+<span class="c1"># if the graph is weighted, the weights are represented by a matrix W</span>
+<span class="c1">#        such that W[u][v] is the weight of arc (u,v)</span>
+
+<span class="c1"># listdict is an arc weighted adjacency list G,</span>
+<span class="c1">#        where G[u] is a dictionary.</span>
+<span class="c1">#        For each arc (u,v), G[u][v] is the weight of the arc.</span>
+
+<span class="c1"># dictdict is an arc weighted adjacency dictionary G,</span>
+<span class="c1">#        where G[u] is a dictionary.</span>
+<span class="c1">#        For each arc (u,v), G[u][v] is the weight of the arc.</span>
+
+<span class="c1"># matrix is an adjacency matrix M,</span>
+<span class="c1">#        such that M[u][v] is None if there is no arc (u,v)</span>
+<span class="c1">#        otherwise it is the weight of the arc.</span>
+<span class="c1">#        Value M[u][v]=True can be used for unweighted graphs.</span>
+
+<div class="viewcode-block" id="matrix_to_listlist"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.matrix_to_listlist">[docs]</a><span class="k">def</span> <span class="nf">matrix_to_listlist</span><span class="p">(</span><span class="n">weight</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;transforms a squared weight matrix in a adjacency table of type listlist</span>
+<span class="sd">    encoding the directed graph corresponding to the entries of the matrix</span>
+<span class="sd">    different from None</span>
+
+<span class="sd">    :param weight: squared weight matrix, weight[u][v] != None iff arc (u,v) exists</span>
+<span class="sd">    :complexity: linear</span>
+<span class="sd">    :returns: the unweighted directed graph in the listlist representation,</span>
+<span class="sd">                       listlist[u] contains all v for which arc (u,v) exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weight</span><span class="p">))]</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">weight</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<div class="viewcode-block" id="listlist_and_matrix_to_listdict"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.listlist_and_matrix_to_listdict">[docs]</a><span class="k">def</span> <span class="nf">listlist_and_matrix_to_listdict</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transforms the weighted adjacency list representation of a graph</span>
+<span class="sd">    of type listlist + optional weight matrix</span>
+<span class="sd">    into the listdict representation</span>
+
+<span class="sd">    :param graph: in listlist representation</span>
+<span class="sd">    :param weight: optional weight matrix</span>
+<span class="sd">    :returns: graph in listdict representation</span>
+<span class="sd">    :complexity: linear</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">weight</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[{</span><span class="n">v</span><span class="p">:</span><span class="n">weight</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]}</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">))]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[{</span><span class="n">v</span><span class="p">:</span><span class="kc">None</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]}</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">))]</span></div>
+
+
+<div class="viewcode-block" id="listdict_to_listlist_and_matrix"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.listdict_to_listlist_and_matrix">[docs]</a><span class="k">def</span> <span class="nf">listdict_to_listlist_and_matrix</span><span class="p">(</span><span class="n">sparse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transforms the adjacency list representation of a graph</span>
+<span class="sd">    of type listdict into the listlist + weight matrix representation</span>
+
+<span class="sd">    :param sparse: graph in listdict representation</span>
+<span class="sd">    :returns: couple with listlist representation, and weight matrix</span>
+<span class="sd">    :complexity: linear</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sparse</span><span class="p">))</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">V</span><span class="p">]</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="p">[[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">V</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">V</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">V</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sparse</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">weight</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">sparse</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">weight</span></div>
+
+<div class="viewcode-block" id="dictdict_to_listdict"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.dictdict_to_listdict">[docs]</a><span class="k">def</span> <span class="nf">dictdict_to_listdict</span><span class="p">(</span><span class="n">dictgraph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transforms a dict-dict graph representation into a</span>
+<span class="sd">    adjacency dictionary representation (list-dict)</span>
+
+<span class="sd">    :param dictgraph: dictionary mapping vertices to dictionary</span>
+<span class="sd">           such that dictgraph[u][v] is weight of arc (u,v)</span>
+<span class="sd">    :complexity: linear</span>
+<span class="sd">    :returns: tuple with graph (listdict), name_to_node (dict), node_to_name (list)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dictgraph</span><span class="p">)</span>                            <span class="c1"># vertices</span>
+    <span class="n">node_to_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dictgraph</span><span class="p">]</span>   <span class="c1"># bijection indices &lt;-&gt; names</span>
+    <span class="n">node_to_name</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>                           <span class="c1"># to make it more readable</span>
+    <span class="n">name_to_node</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">name_to_node</span><span class="p">[</span><span class="n">node_to_name</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="n">sparse</span> <span class="o">=</span> <span class="p">[{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>               <span class="c1"># build sparse graph</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">dictgraph</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dictgraph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="n">sparse</span><span class="p">[</span><span class="n">name_to_node</span><span class="p">[</span><span class="n">u</span><span class="p">]][</span><span class="n">name_to_node</span><span class="p">[</span><span class="n">v</span><span class="p">]]</span> <span class="o">=</span> <span class="n">dictgraph</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">sparse</span><span class="p">,</span> <span class="n">name_to_node</span><span class="p">,</span> <span class="n">node_to_name</span></div>
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># for shortest paths</span>
+
+<div class="viewcode-block" id="extract_path"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.extract_path">[docs]</a><span class="k">def</span> <span class="nf">extract_path</span><span class="p">(</span><span class="n">prec</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;extracts a path in form of vertex list from source to vertex v</span>
+<span class="sd">       given a precedence table prec leading to the source</span>
+
+<span class="sd">    :param prec: precedence table of a tree</span>
+<span class="sd">    :param v: vertex on the tree</span>
+<span class="sd">    :returns: path from root to v, in form of a list</span>
+<span class="sd">    :complexity: linear</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">L</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">prec</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">L</span>   <span class="c1"># prevent infinite loops for a bad formed table prec</span>
+    <span class="k">return</span> <span class="n">L</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># for exporting flows in dot format</span>
+
+<div class="viewcode-block" id="make_flow_labels"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.graph.make_flow_labels">[docs]</a><span class="k">def</span> <span class="nf">make_flow_labels</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">flow</span><span class="p">,</span> <span class="n">capac</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate arc labels for a flow in a graph with capacities.</span>
+
+<span class="sd">    :param graph: adjacency list or adjacency dictionary</span>
+<span class="sd">    :param flow:  flow matrix or adjacency dictionary</span>
+<span class="sd">    :param capac: capacity matrix or adjacency dictionary</span>
+<span class="sd">    :returns: listdic graph representation, with the arc label strings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+    <span class="n">arc_label</span> <span class="o">=</span> <span class="p">[{</span><span class="n">v</span><span class="p">:</span><span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]}</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">V</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">V</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">flow</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">arc_label</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">flow</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">],</span> <span class="n">capac</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">arc_label</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>   <span class="c1"># do not show negative flow arcs</span>
+    <span class="k">return</span> <span class="n">arc_label</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_white.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Christoph Dürr and Jill-Jênn Vie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

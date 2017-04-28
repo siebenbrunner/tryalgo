@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tryalgo.rabin_karp &#8212; tryalgo 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tryalgo.rabin_karp</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Find substrings by Rabin-Karp</span>
+<span class="c1"># jill-jenn vie et christoph durr - 2015</span>
+
+<span class="c1"># http://www.wolframalpha.com/input/?i=nearest+prime+number+to+2**56</span>
+<span class="c1"># snip{ rabin_karp_roll_hash</span>
+<span class="n">PRIME</span> <span class="o">=</span> <span class="mi">72057594037927931</span>     <span class="c1"># &lt; 2^{56}</span>
+<span class="n">DOMAIN</span> <span class="o">=</span> <span class="mi">128</span>
+
+
+<div class="viewcode-block" id="roll_hash"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.rabin_karp.roll_hash">[docs]</a><span class="k">def</span> <span class="nf">roll_hash</span><span class="p">(</span><span class="n">old_val</span><span class="p">,</span> <span class="n">out_digit</span><span class="p">,</span> <span class="n">in_digit</span><span class="p">,</span> <span class="n">last_pos</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="p">(</span><span class="n">old_val</span> <span class="o">-</span> <span class="n">out_digit</span> <span class="o">*</span> <span class="n">last_pos</span> <span class="o">+</span> <span class="n">DOMAIN</span> <span class="o">*</span> <span class="n">PRIME</span><span class="p">)</span> <span class="o">%</span> <span class="n">PRIME</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span> <span class="o">*</span> <span class="n">DOMAIN</span><span class="p">)</span> <span class="o">%</span> <span class="n">PRIME</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="n">in_digit</span><span class="p">)</span> <span class="o">%</span> <span class="n">PRIME</span></div>
+<span class="c1"># snip}</span>
+
+
+<span class="c1"># snip{ rabin_karp_matches</span>
+<div class="viewcode-block" id="matches"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.rabin_karp.matches">[docs]</a><span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;tests if s[i:i + k] equals t[j:j + k]&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">d</span><span class="p">]</span> <span class="o">!=</span> <span class="n">t</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">d</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+<span class="c1"># snip}</span>
+
+
+<span class="c1"># snip{ rabin_karp_matching</span>
+<div class="viewcode-block" id="rabin_karp_matching"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.rabin_karp.rabin_karp_matching">[docs]</a><span class="k">def</span> <span class="nf">rabin_karp_matching</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find a substring by Rabin-Karp</span>
+
+<span class="sd">    :param s: the haystack string</span>
+<span class="sd">    :param t: the needle string</span>
+
+<span class="sd">    :returns: index i such that s[i: i + len(t)] == t, or -1</span>
+<span class="sd">    :complexity: O(len(s) + len(t)) in expected time,</span>
+<span class="sd">                and O(len(s) * len(t)) in worst case</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hash_s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">hash_t</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">len_s</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">len_t</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">last_pos</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">DOMAIN</span><span class="p">,</span> <span class="n">len_t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">PRIME</span>
+    <span class="k">if</span> <span class="n">len_s</span> <span class="o">&lt;</span> <span class="n">len_t</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_t</span><span class="p">):</span>         <span class="c1"># précalcul</span>
+        <span class="n">hash_s</span> <span class="o">=</span> <span class="p">(</span><span class="n">DOMAIN</span> <span class="o">*</span> <span class="n">hash_s</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="o">%</span> <span class="n">PRIME</span>
+        <span class="n">hash_t</span> <span class="o">=</span> <span class="p">(</span><span class="n">DOMAIN</span> <span class="o">*</span> <span class="n">hash_t</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="o">%</span> <span class="n">PRIME</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_s</span> <span class="o">-</span> <span class="n">len_t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">hash_s</span> <span class="o">==</span> <span class="n">hash_t</span><span class="p">:</span>        <span class="c1"># vérifier caract. par caract.</span>
+            <span class="k">if</span> <span class="n">matches</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">len_t</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">i</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len_s</span> <span class="o">-</span> <span class="n">len_t</span><span class="p">:</span>
+            <span class="n">hash_s</span> <span class="o">=</span> <span class="n">roll_hash</span><span class="p">(</span><span class="n">hash_s</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">len_t</span><span class="p">]),</span> <span class="n">last_pos</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+<span class="c1"># snip}</span>
+
+
+<span class="c1"># snip{ rabin_karp_factor</span>
+<div class="viewcode-block" id="rabin_karp_factor"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.rabin_karp.rabin_karp_factor">[docs]</a><span class="k">def</span> <span class="nf">rabin_karp_factor</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find a common factor by Rabin-Karp</span>
+
+<span class="sd">    :param string s: haystack</span>
+<span class="sd">    :param string t: needle</span>
+<span class="sd">    :param int k: factor length</span>
+<span class="sd">    :returns: (i, j) such that s[i:i + k] == t[j:j + k] or None.</span>
+<span class="sd">              In case of tie, lexicographical minimum (i, j) is returned</span>
+<span class="sd">    :complexity: O(len(s) + len(t)) in expected time,</span>
+<span class="sd">                and O(len(s) + len(t) * k) in worst case</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">last_pos</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">DOMAIN</span><span class="p">,</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">PRIME</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">assert</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">k</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">hash_t</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>         <span class="c1"># stocker les valeurs de hachage</span>
+        <span class="n">hash_t</span> <span class="o">=</span> <span class="p">(</span><span class="n">DOMAIN</span> <span class="o">*</span> <span class="n">hash_t</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span> <span class="o">%</span> <span class="n">PRIME</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">hash_t</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">hash_t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">hash_t</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">:</span>
+            <span class="n">hash_t</span> <span class="o">=</span> <span class="n">roll_hash</span><span class="p">(</span><span class="n">hash_t</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="nb">ord</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">k</span><span class="p">]),</span> <span class="n">last_pos</span><span class="p">)</span>
+    <span class="n">hash_s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>         <span class="c1"># précalcul</span>
+        <span class="n">hash_s</span> <span class="o">=</span> <span class="p">(</span><span class="n">DOMAIN</span> <span class="o">*</span> <span class="n">hash_s</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="o">%</span> <span class="n">PRIME</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">hash_s</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>      <span class="c1"># est-ce que cette signature est dans s ?</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">[</span><span class="n">hash_s</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">matches</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">:</span>
+            <span class="n">hash_s</span> <span class="o">=</span> <span class="n">roll_hash</span><span class="p">(</span><span class="n">hash_s</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">ord</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="p">]),</span> <span class="n">last_pos</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+<span class="c1"># snip}</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_white.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Christoph Dürr and Jill-Jênn Vie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to tryalgo’s documentation! &#8212; tryalgo 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Content of the library" href="content.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="content.html" title="Content of the library"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">tryalgo 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-tryalgo-s-documentation">
+<h1>Welcome to tryalgo&#8217;s documentation!<a class="headerlink" href="#welcome-to-tryalgo-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>This Python library implements various algorithms and data structures such as graph, string and computational geometry problems.</p>
+<p>Proofs of correctness of these algorithms are available in the French language book: <a class="reference external" href="http://www.editions-ellipses.fr/product_info.php?products_id=10829">Programmation efficace : les 128 algorithmes qu&#8217;il faut avoir compris et codés en Python au cours de sa vie</a>.</p>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference external" href="https://github.com/jilljenn/tryalgo">GitHub Project</a></li>
+</ul>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="with-pip">
+<h3>With PIP<a class="headerlink" href="#with-pip" title="Permalink to this headline">¶</a></h3>
+<p>You can install the tryalgo package using pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip3 install tryalgo
+</pre></div>
+</div>
+</div>
+<div class="section" id="from-pypi">
+<h3>From PyPI<a class="headerlink" href="#from-pypi" title="Permalink to this headline">¶</a></h3>
+<p>Download the <a class="reference external" href="https://pypi.python.org/pypi/tryalgo/">tar.gz file from PyPI</a> and extract it.  The library consists of a directory named <cite>tryalgo</cite> containing several Python modules.</p>
+</div>
+</div>
+<div class="section" id="first-steps">
+<h2>First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="coin-change">
+<h3>Coin change<a class="headerlink" href="#coin-change" title="Permalink to this headline">¶</a></h3>
+<p>Here is an dynamic programming example, with coin change (<a class="reference external" href="tryalgo/subsetsum.html#coin_change">6 lines of source code</a>):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">tryalgo.subsetsum</span> <span class="k">import</span> <span class="n">coin_change</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">coin_change</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span> <span class="mi">29</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Which should print <code class="code docutils literal"><span class="pre">True</span></code> because 29 can be expressed as the linear combination 6*3 + 0*5 + 1*11.</p>
+</div>
+<div class="section" id="longest-palindrome-substring-of-a-string">
+<h3>Longest palindrome substring of a string<a class="headerlink" href="#longest-palindrome-substring-of-a-string" title="Permalink to this headline">¶</a></h3>
+<p>In order to find the longest palindrome substring of a string, you can use the implementation of Manacher&#8217;s algorithm (<a class="reference external" href="tryalgo/manacher.html#manacher">source</a>) as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tryalgo.manacher</span> <span class="k">import</span> <span class="n">manacher</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">manacher</span><span class="p">(</span><span class="s2">&quot;babcbabcbaccba&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>which will print (1,10). Indeed, the substring from index 1 to index 10 (excluding position 10) is the palindrome &#8220;abcbabcba&#8221;.</p>
+</div>
+<div class="section" id="pathfinding">
+<h3>Pathfinding<a class="headerlink" href="#pathfinding" title="Permalink to this headline">¶</a></h3>
+<p>Now, suppose you want to compute the shortest paths in the following graph starting at vertex 0.</p>
+<a class="reference internal image-reference" href="_images/example_dijkstra.png"><img alt="_images/example_dijkstra.png" src="_images/example_dijkstra.png" style="width: 400px;" /></a>
+<p>First, we need to encode this graph with a an adjacency list data structure <code class="code docutils literal"><span class="pre">graph</span></code>, which format we call <em>listlist</em>, where <code class="code docutils literal"><span class="pre">graph[u]</span></code> is the list of neighbors of vertex <code class="code docutils literal"><span class="pre">u</span></code>.  The edge weights are simply encoded in a squared matrix:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+         <span class="p">[</span><span class="mi">9</span><span class="p">]]</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1">#           0  1  2  3  4  5  6  7  8  9 10 11</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="p">[[</span><span class="n">_</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1"># 0</span>
+           <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1"># 1</span>
+           <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1"># 2</span>
+           <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1"># 3</span>
+           <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1"># 4</span>
+           <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1"># 5</span>
+           <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1"># 6</span>
+           <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1"># 7</span>
+           <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1"># 8</span>
+           <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="c1"># 9</span>
+           <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">],</span> <span class="c1">#10</span>
+           <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">]]</span> <span class="c1">#11</span>
+</pre></div>
+</div>
+<p>The shortest path can be computed using Dijkstra&#8217;s algorithm, also known as <em>lowest-cost search</em>.  Our implementation returns the table of distances from the source and a predecessor table describing the shortest path tree:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tryalgo.dijkstra</span> <span class="k">import</span> <span class="n">dijkstra</span>
+
+<span class="n">dist</span><span class="p">,</span> <span class="n">prec</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">node</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>  <span class="c1"># Will print 9, the distance from node 0 to node 10</span>
+<span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">]</span>
+<span class="k">while</span> <span class="n">prec</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">prec</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># Will print [0, 1, 2, 4, 7, 10], a shortest path from 0 to 10</span>
+</pre></div>
+</div>
+<p>If your graph is sparse (contains few arcs), then you might want to represent it using dictionaries.  Formally, the sparse graph representation is a list of dictionaries <code class="code docutils literal"><span class="pre">sparse</span></code> such that <code class="code docutils literal"><span class="pre">v</span></code> belongs to <code class="code docutils literal"><span class="pre">sparse[u]</span></code> if there is an arc <code class="code docutils literal"><span class="pre">(u,v)</span></code> of weight <code class="code docutils literal"><span class="pre">sparse[u][v]</span></code>.
+We call this graph format <em>listdict</em>. For example, the above graph would be represented as:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">4</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">5</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">6</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">7</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+ <span class="p">{</span><span class="mi">9</span><span class="p">:</span> <span class="mi">1</span><span class="p">}]</span>
+</pre></div>
+</div>
+<p>This data structure encodes both the graph and the arc weights, hence it is possible to invoke the function the following way:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dist</span><span class="p">,</span> <span class="n">prec</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">sparse</span><span class="p">,</span> <span class="n">sparse</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content.html">Content of the library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content.html#basic-algorithms-and-data-structures">Basic algorithms and data structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#strings">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#sequences-and-arrays">Sequences and Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#intervals">Intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#graphs">Graphs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#cycles">Cycles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#shortest-paths">Shortest paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#matching-flows-and-related">Matching, flows and related</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#trees">Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#geometry">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#arithmetic">Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#backtracking">Backtracking</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tryalgo/modules.html">tryalgo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo/tryalgo.html">tryalgo package</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="#">
+              <img class="logo" src="_static/logo_white.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to tryalgo&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#with-pip">With PIP</a></li>
+<li><a class="reference internal" href="#from-pypi">From PyPI</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#first-steps">First steps</a><ul>
+<li><a class="reference internal" href="#coin-change">Coin change</a></li>
+<li><a class="reference internal" href="#longest-palindrome-substring-of-a-string">Longest palindrome substring of a string</a></li>
+<li><a class="reference internal" href="#pathfinding">Pathfinding</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="content.html"
+                        title="next chapter">Content of the library</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="content.html" title="Content of the library"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">tryalgo 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Christoph Dürr and Jill-Jênn Vie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

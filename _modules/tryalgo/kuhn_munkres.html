@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tryalgo.kuhn_munkres &#8212; tryalgo 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tryalgo.kuhn_munkres</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Maximum profit bipartite matching by Kuhn-Munkres</span>
+<span class="c1"># jill-jenn vie et christoph durr - 2014-2015</span>
+
+
+<span class="c1"># snip{</span>
+<span class="n">TOLERANCE</span> <span class="o">=</span> <span class="mf">1e-6</span>          <span class="c1"># everything smaller is considered zero</span>
+
+
+<div class="viewcode-block" id="kuhn_munkres"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.kuhn_munkres.kuhn_munkres">[docs]</a><span class="k">def</span> <span class="nf">kuhn_munkres</span><span class="p">(</span><span class="n">G</span><span class="p">):</span>      <span class="c1"># couplage parfait de profit maximal en O(n^3)</span>
+    <span class="sd">&quot;&quot;&quot;Maximum profit bipartite matching by Kuhn-Munkres</span>
+
+<span class="sd">    :param G: weight matrix G[u][v] is weight of edge (u,v),</span>
+<span class="sd">    :requires: graph is complete bi-partite graph and both sides U, V have same size.</span>
+<span class="sd">               Hence G is a squared matrix where  float(&#39;-inf&#39;) or float(&#39;inf&#39;)</span>
+<span class="sd">               are allowed entries but not None.</span>
+<span class="sd">    :returns: matching table from U to V, value of matching</span>
+<span class="sd">    :complexity: :math:`O(|V|^3)`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>      <span class="c1"># matrice carrée</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">V</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>                 <span class="c1"># couplage vide</span>
+    <span class="n">mv</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">lu</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">G</span><span class="p">]</span>    <span class="c1"># étiqu. triviaux</span>
+    <span class="n">lv</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">U</span><span class="p">:</span>                  <span class="c1"># constr. un arbre alterné</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">au</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="n">au</span><span class="p">[</span><span class="n">root</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">Av</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="n">marge</span> <span class="o">=</span> <span class="p">[(</span><span class="n">lu</span><span class="p">[</span><span class="n">root</span><span class="p">]</span> <span class="o">+</span> <span class="n">lv</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">-</span> <span class="n">G</span><span class="p">[</span><span class="n">root</span><span class="p">][</span><span class="n">v</span><span class="p">],</span> <span class="n">root</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">V</span><span class="p">]</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="p">((</span><span class="n">delta</span><span class="p">,</span> <span class="n">u</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="n">marge</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">V</span> <span class="k">if</span> <span class="n">Av</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">au</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">delta</span> <span class="o">&gt;</span> <span class="n">TOLERANCE</span><span class="p">:</span>   <span class="c1"># arbre est complet</span>
+                <span class="k">for</span> <span class="n">u0</span> <span class="ow">in</span> <span class="n">U</span><span class="p">:</span>        <span class="c1"># améliorer les étiquettes</span>
+                    <span class="k">if</span> <span class="n">au</span><span class="p">[</span><span class="n">u0</span><span class="p">]:</span>
+                        <span class="n">lu</span><span class="p">[</span><span class="n">u0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">delta</span>
+                <span class="k">for</span> <span class="n">v0</span> <span class="ow">in</span> <span class="n">V</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">Av</span><span class="p">[</span><span class="n">v0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">lv</span><span class="p">[</span><span class="n">v0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">delta</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="o">=</span> <span class="n">marge</span><span class="p">[</span><span class="n">v0</span><span class="p">]</span>
+                        <span class="n">marge</span><span class="p">[</span><span class="n">v0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="n">delta</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">lu</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">lv</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">-</span> <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">TOLERANCE</span>  <span class="c1"># equality test</span>
+            <span class="n">Av</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span>                <span class="c1"># ajout (u, v) dans A</span>
+            <span class="k">if</span> <span class="n">mv</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>                <span class="c1"># chemin alt. trouvé...</span>
+            <span class="n">u1</span> <span class="o">=</span> <span class="n">mv</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">au</span><span class="p">[</span><span class="n">u1</span><span class="p">]</span>
+            <span class="n">au</span><span class="p">[</span><span class="n">u1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>            <span class="c1"># ajout (u1, v) dans A</span>
+            <span class="k">for</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">V</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">Av</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>   <span class="c1"># mettre à jour les marges</span>
+                    <span class="n">alt</span> <span class="o">=</span> <span class="p">(</span><span class="n">lu</span><span class="p">[</span><span class="n">u1</span><span class="p">]</span> <span class="o">+</span> <span class="n">lv</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span> <span class="o">-</span> <span class="n">G</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="n">v1</span><span class="p">],</span> <span class="n">u1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">marge</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">alt</span><span class="p">:</span>
+                        <span class="n">marge</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt</span>
+        <span class="k">while</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>         <span class="c1"># ...chemin alt. trouvé</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">Av</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>                <span class="c1"># le long du chemin vers la racine</span>
+            <span class="n">prec</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+            <span class="n">mv</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span>                <span class="c1"># augmenter le couplage</span>
+            <span class="n">mu</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">prec</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mu</span><span class="p">,</span>  <span class="nb">sum</span><span class="p">(</span><span class="n">lu</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lv</span><span class="p">))</span></div>
+<span class="c1"># snip}</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_white.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Christoph Dürr and Jill-Jênn Vie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

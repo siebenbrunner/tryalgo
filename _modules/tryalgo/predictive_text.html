@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tryalgo.predictive_text &#8212; tryalgo 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tryalgo.predictive_text</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Predictive text for mobile phones</span>
+<span class="c1"># jill-jenn vie et christoph durr and louis abraham - 2014-2015</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;predictive_text&quot;</span><span class="p">,</span> <span class="s2">&quot;propose&quot;</span><span class="p">]</span>
+
+<span class="c1"># snip{</span>
+<span class="n">t9</span> <span class="o">=</span> <span class="s2">&quot;22233344455566677778889999&quot;</span>
+<span class="c1">#     abcdefghijklmnopqrstuvwxyz   correspondance</span>
+
+
+<span class="k">def</span> <span class="nf">lettre_chiffre</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;:returns: the digit correspondence for letter x&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="s1">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="s1">&#39;z&#39;</span>
+    <span class="k">return</span> <span class="n">t9</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">mot_code</span><span class="p">(</span><span class="n">mot</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;:returns: the digit correspondence for word mot&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">lettre_chiffre</span><span class="p">,</span> <span class="n">mot</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="predictive_text"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.predictive_text.predictive_text">[docs]</a><span class="k">def</span> <span class="nf">predictive_text</span><span class="p">(</span><span class="n">dico</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Predictive text for mobile phones</span>
+
+<span class="sd">    :param dico: associates weights to words from [a-z]*</span>
+<span class="sd">    :returns: a dictionary associating to words from [2-9]*</span>
+<span class="sd">             a corresponding word from the dictionary with highest weight</span>
+<span class="sd">    :complexity: linear in total word length</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="p">{}</span>   <span class="c1"># freq[p] = poids total des mots de préfixe p</span>
+    <span class="k">for</span> <span class="n">mot</span><span class="p">,</span> <span class="n">poids</span> <span class="ow">in</span> <span class="n">dico</span><span class="p">:</span>
+        <span class="n">prefixe</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">mot</span><span class="p">:</span>
+            <span class="n">prefixe</span> <span class="o">+=</span> <span class="n">x</span>
+            <span class="k">if</span> <span class="n">prefixe</span> <span class="ow">in</span> <span class="n">freq</span><span class="p">:</span>
+                <span class="n">freq</span><span class="p">[</span><span class="n">prefixe</span><span class="p">]</span> <span class="o">+=</span> <span class="n">poids</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">freq</span><span class="p">[</span><span class="n">prefixe</span><span class="p">]</span> <span class="o">=</span> <span class="n">poids</span>
+    <span class="c1">#   prop[s] = préfixe à afficher sur s</span>
+    <span class="n">prop</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">prefixe</span> <span class="ow">in</span> <span class="n">freq</span><span class="p">:</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">mot_code</span><span class="p">(</span><span class="n">prefixe</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prop</span> <span class="ow">or</span> <span class="n">freq</span><span class="p">[</span><span class="n">prop</span><span class="p">[</span><span class="n">code</span><span class="p">]]</span> <span class="o">&lt;</span> <span class="n">freq</span><span class="p">[</span><span class="n">prefixe</span><span class="p">]:</span>
+            <span class="n">prop</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefixe</span>
+    <span class="k">return</span> <span class="n">prop</span></div>
+
+
+<div class="viewcode-block" id="propose"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.predictive_text.propose">[docs]</a><span class="k">def</span> <span class="nf">propose</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">seq</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;wrapper to access a dictionary even for non present keys&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">prop</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">prop</span><span class="p">[</span><span class="n">seq</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;None&quot;</span></div>
+<span class="c1"># snip}</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_white.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Christoph Dürr and Jill-Jênn Vie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

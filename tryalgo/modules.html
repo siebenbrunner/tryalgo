@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tryalgo &#8212; tryalgo 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="tryalgo package" href="tryalgo.html" />
+    <link rel="prev" title="Content of the library" href="../content.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tryalgo.html" title="tryalgo package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../content.html" title="Content of the library"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">tryalgo 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="tryalgo">
+<h1>tryalgo<a class="headerlink" href="#tryalgo" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tryalgo.html">tryalgo package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.anagrams">tryalgo.anagrams module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.arithm">tryalgo.arithm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.arithm_expr_eval">tryalgo.arithm_expr_eval module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.arithm_expr_target">tryalgo.arithm_expr_target module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.bellman_ford">tryalgo.bellman_ford module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.bfs">tryalgo.bfs module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.biconnected_components">tryalgo.biconnected_components module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.binary_search">tryalgo.binary_search module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.bipartite_matching">tryalgo.bipartite_matching module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.bipartite_vertex_cover">tryalgo.bipartite_vertex_cover module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.closest_points">tryalgo.closest_points module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.closest_values">tryalgo.closest_values module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.convex_hull">tryalgo.convex_hull module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.dancing_links">tryalgo.dancing_links module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.dfs">tryalgo.dfs module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.dijkstra">tryalgo.dijkstra module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.dilworth">tryalgo.dilworth module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.dinic">tryalgo.dinic module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.dist_grid">tryalgo.dist_grid module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.edmonds_karp">tryalgo.edmonds_karp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.eratosthene">tryalgo.eratosthene module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.eulerian_tour">tryalgo.eulerian_tour module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.fast_exponentiation">tryalgo.fast_exponentiation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.fenwick">tryalgo.fenwick module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.floyd_warshall">tryalgo.floyd_warshall module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.ford_fulkerson">tryalgo.ford_fulkerson module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.freivalds">tryalgo.freivalds module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.gale_shapley">tryalgo.gale_shapley module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.gauss_jordan">tryalgo.gauss_jordan module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.girth">tryalgo.girth module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.graph">tryalgo.graph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.graph01">tryalgo.graph01 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.horn_sat">tryalgo.horn_sat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.huffman">tryalgo.huffman module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.interval_cover">tryalgo.interval_cover module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.interval_tree">tryalgo.interval_tree module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.intervals_union">tryalgo.intervals_union module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.knapsack">tryalgo.knapsack module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.knuth_morris_pratt">tryalgo.knuth_morris_pratt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.knuth_morris_pratt_border">tryalgo.knuth_morris_pratt_border module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.kruskal">tryalgo.kruskal module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.kuhn_munkres">tryalgo.kuhn_munkres module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.kuhn_munkres_n4">tryalgo.kuhn_munkres_n4 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.laser_mirrors">tryalgo.laser_mirrors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.left_right_inversions">tryalgo.left_right_inversions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.levenshtein">tryalgo.levenshtein module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.longest_common_subsequence">tryalgo.longest_common_subsequence module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.longest_increasing_subsequence">tryalgo.longest_increasing_subsequence module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.lowest_common_ancestor">tryalgo.lowest_common_ancestor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.majority">tryalgo.majority module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.manacher">tryalgo.manacher module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.matrix_chain_mult">tryalgo.matrix_chain_mult module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.max_interval_intersec">tryalgo.max_interval_intersec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.merge_ordered_lists">tryalgo.merge_ordered_lists module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.min_mean_cycle">tryalgo.min_mean_cycle module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.next_permutation">tryalgo.next_permutation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.our_heap">tryalgo.our_heap module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.our_queue">tryalgo.our_queue module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.partition_refinement">tryalgo.partition_refinement module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.permutation_rank">tryalgo.permutation_rank module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.polygon">tryalgo.polygon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.predictive_text">tryalgo.predictive_text module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.rabin_karp">tryalgo.rabin_karp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.range_minimum_query">tryalgo.range_minimum_query module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.rectangles_from_grid">tryalgo.rectangles_from_grid module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.rectangles_from_histogram">tryalgo.rectangles_from_histogram module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.rectangles_from_points">tryalgo.rectangles_from_points module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.roman_numbers">tryalgo.roman_numbers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.scalar">tryalgo.scalar module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.strongly_connected_components">tryalgo.strongly_connected_components module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.subsetsum">tryalgo.subsetsum module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.subsetsum_divide">tryalgo.subsetsum_divide module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.sudoku">tryalgo.sudoku module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.three_partition">tryalgo.three_partition module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.topological_order">tryalgo.topological_order module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.trie">tryalgo.trie module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.two_sat">tryalgo.two_sat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.union_rectangles">tryalgo.union_rectangles module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo.windows_k_distinct">tryalgo.windows_k_distinct module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tryalgo.html#module-tryalgo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_white.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../content.html"
+                        title="previous chapter">Content of the library</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tryalgo.html"
+                        title="next chapter">tryalgo package</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tryalgo.html" title="tryalgo package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../content.html" title="Content of the library"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">tryalgo 1.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Christoph Dürr and Jill-Jênn Vie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tryalgo.partition_refinement &#8212; tryalgo 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tryalgo.partition_refinement</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Partition refinement</span>
+<span class="c1"># christoph durr - 2016</span>
+
+<span class="c1">#log: 10/11/2016 modified to preserve class order after refinement</span>
+<span class="c1">#     15/11/2016 this was non sense, moved back</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PartitionRefinement&quot;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">DoubleLinkedListItem</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Item of a circular double linked list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new item to be inserted before item anchor.</span>
+<span class="sd">           if anchor is None: create a single item circular double linked list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">anchor</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prec</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">succ</span> <span class="o">=</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prec</span><span class="o">.</span><span class="n">succ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">succ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">succ</span><span class="o">.</span><span class="n">prec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;insert list item before anchor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prec</span> <span class="o">=</span> <span class="n">anchor</span><span class="o">.</span><span class="n">prec</span>        <span class="c1"># point to the neighbors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">succ</span> <span class="o">=</span> <span class="n">anchor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">succ</span><span class="o">.</span><span class="n">prec</span> <span class="o">=</span> <span class="bp">self</span>          <span class="c1"># make neighbors point to item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prec</span><span class="o">.</span><span class="n">succ</span> <span class="o">=</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;iterate trough circular list.</span>
+<span class="sd">        warning: might end stuck in an infinite loop if chaining is not valid</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">yield</span> <span class="bp">self</span>
+        <span class="k">while</span> <span class="n">curr</span><span class="o">.</span><span class="n">succ</span> <span class="o">!=</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">succ</span>
+            <span class="k">yield</span> <span class="n">curr</span>
+
+
+<span class="k">class</span> <span class="nc">PartitionClass</span><span class="p">(</span><span class="n">DoubleLinkedListItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A partition is a list of classes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">DoubleLinkedListItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="kc">None</span>         <span class="c1"># empty list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="kc">None</span>         <span class="c1"># reference to split class</span>
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;add item to the end of the item list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>        <span class="c1"># was list empty ?</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="n">item</span>     <span class="c1"># then this is the new head</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">PartitionItem</span><span class="p">(</span><span class="n">DoubleLinkedListItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class is a list of items</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">theclass</span><span class="p">):</span>
+        <span class="n">DoubleLinkedListItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theclass</span> <span class="o">=</span> <span class="n">theclass</span>
+        <span class="n">theclass</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;remove item from its class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DoubleLinkedListItem</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>     <span class="c1"># remove from double linked list</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">succ</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">:</span>                 <span class="c1"># list was a singleton</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">theclass</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="kc">None</span>        <span class="c1"># class is empty</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">theclass</span><span class="o">.</span><span class="n">items</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">:</span>     <span class="c1"># oups we removed the head</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">theclass</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">succ</span>   <span class="c1"># head is now successor</span>
+
+
+<div class="viewcode-block" id="PartitionRefinement"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.partition_refinement.PartitionRefinement">[docs]</a><span class="k">class</span> <span class="nc">PartitionRefinement</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This data structure implements an order preserving partition with refinements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start with the partition consisting of the unique class {0,1,..,n-1}</span>
+<span class="sd">        complexity: O(n) both in time and space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">PartitionClass</span><span class="p">()</span>                  <span class="c1"># initially there is a single class of size n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">c</span>                      <span class="c1"># reference to first class in class list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">PartitionItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>   <span class="c1"># value ordered list of items</span>
+
+<div class="viewcode-block" id="PartitionRefinement.refine"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.partition_refinement.PartitionRefinement.refine">[docs]</a>    <span class="k">def</span> <span class="nf">refine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pivot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Split every class C in the partition into C intersection pivot and C setminus pivot</span>
+<span class="sd">        complexity: linear in size of pivot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">has_split</span> <span class="o">=</span> <span class="p">[]</span>                        <span class="c1"># remember which classes split</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pivot</span><span class="p">:</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">):</span>      <span class="c1"># ignore if outside of domain</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">theclass</span>                <span class="c1"># c = class of x</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">split</span><span class="p">:</span>               <span class="c1"># possibly create new split class</span>
+                    <span class="n">c</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="n">PartitionClass</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="ow">is</span> <span class="n">c</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">split</span>   <span class="c1"># always make self.classes point to the first class</span>
+                    <span class="n">has_split</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>                    <span class="c1"># remove from its class</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">theclass</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">split</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>             <span class="c1"># append to the split class</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">has_split</span><span class="p">:</span>                   <span class="c1"># clean information about split classes</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>                   <span class="c1"># delete class if it became empty</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+                <span class="k">del</span> <span class="n">c</span></div>
+
+
+<div class="viewcode-block" id="PartitionRefinement.tolist"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.partition_refinement.PartitionRefinement.tolist">[docs]</a>    <span class="k">def</span> <span class="nf">tolist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;produce a list representation of the partition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">x</span><span class="o">.</span><span class="n">val</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">theclass</span><span class="o">.</span><span class="n">items</span><span class="p">]</span> <span class="k">for</span> <span class="n">theclass</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="PartitionRefinement.order"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.partition_refinement.PartitionRefinement.order">[docs]</a>    <span class="k">def</span> <span class="nf">order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Produce a flatten list of the partition, ordered by classes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">val</span> <span class="k">for</span> <span class="n">theclass</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">theclass</span><span class="o">.</span><span class="n">items</span><span class="p">]</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_white.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Christoph Dürr and Jill-Jênn Vie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>
