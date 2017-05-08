@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>tryalgo.range_minimum_query &#8212; tryalgo 1.2 documentation</title>
+    <title>tryalgo.range_minimum_query &#8212; tryalgo 1.3.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '1.2',
+        VERSION:     '1.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
@@ -54,6 +54,9 @@
 <span class="c1"># Range minimum query</span>
 <span class="c1"># Minimum d&#39;une plage --- range minimum query</span>
 <span class="c1"># jill-jenn vie et christoph durr - 2014-2015</span>
+
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 
 <span class="c1"># snip{</span>
@@ -112,18 +115,25 @@
 
 <div class="viewcode-block" id="LazySegmentTree"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.range_minimum_query.LazySegmentTree">[docs]</a><span class="k">class</span> <span class="nc">LazySegmentTree</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;maintains a tree to allow quick updates and queries on a table.</span>
-<span class="sd">    This is more general than a Fenwick tree or a tree for MinRangeQuery.</span>
-<span class="sd">    Here queries and updates act on ranges.</span>
-<span class="sd">    Updates can be set and add.</span>
-<span class="sd">    Queries can be max, min and sum.</span>
-<span class="sd">    All operations run in time O(\log n) for a the table size n.</span>
+
+<span class="sd">    This is more general than a Fenwick tree or a tree for MinRangeQuery. Here</span>
+<span class="sd">    queries and updates act on index ranges. Updates can be set a range to a</span>
+<span class="sd">    value or add a value to a range. Queries can be max, min and sum over an</span>
+<span class="sd">    index range. All operations run in time O(\log n) for a the table size n.</span>
 <span class="sd">    The given ranges are in the form [i,j] where i is included and j excluded.</span>
-<span class="sd">    In the recursive calls, node is the index of a node in the tree,</span>
-<span class="sd">    and left, right its range.</span>
-<span class="sd">    Values can be any numerical values allowing max, min, and sum,</span>
-<span class="sd">    such as integers, floating point numbers or fractions (from the class Fraction).</span>
-<span class="sd">    Updates over an empty range is valid and does nothing.</span>
-<span class="sd">    Queryes over an empty range is valide and returns the neutral value -inf, +inf or 0.</span>
+<span class="sd">    In the recursive calls, node is the index of a node in the tree, and left,</span>
+<span class="sd">    right its range. Values can be any numerical values allowing max, min, and</span>
+<span class="sd">    sum, such as integers, floating point numbers or fractions (from the class</span>
+<span class="sd">    Fraction). Updates over an empty range is valid and does nothing. Queries</span>
+<span class="sd">    over an empty range is valid and returns the neutral value -inf, +inf or</span>
+<span class="sd">    0.</span>
+
+<span class="sd">    If the node is cleared, then maxval, minval, sumval represent for each</span>
+<span class="sd">    node the query responses over the corresponding index ranges.  If the node</span>
+<span class="sd">    is not clean, it means that lazyset and/or lazyadd contain suspendet</span>
+<span class="sd">    update instructions for that node. Clearing a node means propagating these</span>
+<span class="sd">    values to the descents in the subtrees, and updating maxval,minval and</span>
+<span class="sd">    sumval for that node.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tab</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;stores an integer table tab.</span>
@@ -143,48 +153,50 @@
             <span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">+</span> <span class="n">i</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tabi</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">maintain</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>                    <span class="c1"># maintain invariant</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_maintain</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>                    <span class="c1"># maintain invariant</span>
 
-<div class="viewcode-block" id="LazySegmentTree.maintain"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.range_minimum_query.LazySegmentTree.maintain">[docs]</a>    <span class="k">def</span> <span class="nf">maintain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_maintain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;maintains the invariant for the given node</span>
 <span class="sd">        :promize: the lazy values are None/0 for this node</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="c1"># requires node and its direct descends to be clean</span>
         <span class="n">l</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">node</span>
         <span class="n">r</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">node</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxval</span><span class="p">[</span><span class="n">l</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span><span class="p">[</span><span class="n">r</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="p">[</span><span class="n">l</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="p">[</span><span class="n">r</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">r</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
 
-<div class="viewcode-block" id="LazySegmentTree.propagate"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.range_minimum_query.LazySegmentTree.propagate">[docs]</a>    <span class="k">def</span> <span class="nf">propagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;propagates the lazy updates for this node to the subtrees.</span>
 <span class="sd">        as a result the maxval, minval, sumval values for the node</span>
 <span class="sd">        are up to date.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span>                   <span class="c1"># nothing to do</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first do the pending set</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>            <span class="c1"># not a leaf</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>    <span class="c1"># propagate to direct descendents</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">node</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">node</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>        <span class="c1"># then do the pending add</span>
             <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span> <span class="o">*</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>            <span class="c1"># not at a leaf</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">node</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span>     <span class="c1"># propagate to direct descendents</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">node</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span>
 
 <div class="viewcode-block" id="LazySegmentTree.add"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.range_minimum_query.LazySegmentTree.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">)</span></div>
@@ -203,35 +215,36 @@
 
 
     <span class="k">def</span> <span class="nf">_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">or</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">:</span>
-            <span class="k">return</span>   <span class="c1"># intervals disjoint, nothing to do</span>
+            <span class="k">return</span>   <span class="c1"># disjoint intervals, nothing to do</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">j</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
             <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="n">left</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">mid</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">node</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">maintain</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_maintain</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">or</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">:</span>
-            <span class="k">return</span>   <span class="c1"># intervals disjoint, nothing to do</span>
+            <span class="k">return</span>   <span class="c1"># disjoint intervals, nothing to do</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">j</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="n">left</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">mid</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">node</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">maintain</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_maintain</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">or</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>   <span class="c1"># neutral value for max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">j</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -241,9 +254,9 @@
             <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">or</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;+inf&#39;</span><span class="p">)</span>   <span class="c1"># neutral value for min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">j</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -253,9 +266,9 @@
             <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">or</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>               <span class="c1"># neutral value for sum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">left</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">j</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -264,19 +277,46 @@
             <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">node</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
 
-<div class="viewcode-block" id="LazySegmentTree.dump"><a class="viewcode-back" href="../../tryalgo/tryalgo.html#tryalgo.range_minimum_query.LazySegmentTree.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tmp.dot&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;digraph G{&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;0 [label=&quot;lazyset/lazyadd/maxval/minval/sumval&quot;]&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1"> [label=&quot;</span><span class="si">%s</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%i</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%i</span><span class="s1"> [label=&quot;</span><span class="si">%s</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> \
                 <span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyset</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazyadd</span><span class="p">[</span><span class="n">node</span><span class="p">],</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">node</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sumval</span><span class="p">[</span><span class="n">node</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">,</span> <span class="s1">&#39;∞&#39;</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> -&gt; </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">node</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> -&gt; </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">node</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># execute with: rlwrap python3 range_minimum_query.py</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">LazySegmentTree</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;open tmp.dot with graphviz&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;help: &quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;      2 7 ?      queries range[2, 7]&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;      2 7 + 4    adds 4 to range[2, 7]&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;      2 7 = 1    sets range[2, 7] to 1&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;?&#39;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">] max=</span><span class="si">%s</span><span class="s2"> min=</span><span class="si">%s</span><span class="s2"> sum=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">tree</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">),</span> <span class="n">tree</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">),</span> <span class="n">tree</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span><span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="k">elif</span> <span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;=&#39;</span><span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">_dump</span><span class="p">()</span>
+
 </pre></div>
 
           </div>
@@ -310,7 +350,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tryalgo 1.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>

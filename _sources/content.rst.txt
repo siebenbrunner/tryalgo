@@ -49,7 +49,7 @@ A classical example is the computation of the `edit distance <https://en.wikiped
 
 A very easy problem consisting of computing the sorted union of two given sorted lists, see `merge_ordered_lists <tryalgo/tryalgo.html#module-tryalgo.merge_ordered_lists>`__.  In the area of caching it is interesting to compute maximal time intervals, where no cache fault happened. For this purpose one is given a list of items, and need to identify all inclusion wise maximal intervals that contain at most k distinct items.  This problem is solved with the sliding window technique, which we illustrate in `windows_k_distinct <tryalgo/tryalgo.html#module-tryalgo.windows_k_distinct>`__.
 
-A data structure for an array is an object that stores the array (possibly in an implicit manner) and allows access and modification to the array, as well as different query operations.  For example the range minimum query structure permits to modify individual items of an array and to query the minimum in a given interval of indices.  This is solved generally with a segment tree, allowing logarithmic complexity (in the array size) for these operations, see `range_minimum_query <tryalgo/tryalgo.html#module-tryalgo.range_minimum_query>`__.
+A data structure for an array is an object that stores the array (possibly in an implicit manner) and allows access and modification to the array, as well as different query operations.  For example the range minimum query structure permits to modify individual items of an array and to query the minimum in a given interval of indices.  This is solved generally with a segment tree, allowing logarithmic complexity (in the array size) for these operations, see `range_minimum_query <tryalgo/tryalgo.html#module-tryalgo.range_minimum_query>`__.  There is a cute variant — called `LazySegmentTree` — which allows updates over index ranges, setting to a value or adding a value, and at the same time allows queries over index ranges, asking for the maximum, the minimum or the sum.
 
 A similar structure is the `Fenwick tree <https://en.wikipedia.org/wiki/Fenwick_tree>`_ also called BIT or binary indexed tree. It permits again to modify individual items of the array, but also to query the sum over a given interval of indices, see `fenwick <tryalgo/tryalgo.html#module-tryalgo.fenwick>`__.
 
@@ -94,14 +94,15 @@ Cycles
 
 The library contains implementations of 4 cycle finding algorithms.  The most basic problem consists of finding any cycle in a given undirected graph.  In the second problem we are given an edge weighted graph and want to compute a cycle of minimum total weight. For the third problem we want to minimize the total cycle weight over the cycle length. And in the last problem we want to find a cycle that visits every edge exactly once.
 
-=========================== ======================= ============================================================================== ===============
-problem                     complexity              algorithm                                                                      implementation
-=========================== ======================= ============================================================================== ===============
-find a cycle                :math:`O(|V| + |E|)`    depth-first search                                                             `find_cycle <tryalgo/tryalgo.html#module-tryalgo.dfs>`__
-minimum weight cycle        :math:`O(|V|\cdot |E|)` `Bellman-Ford <https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm>`_ `bellman_ford <tryalgo/tryalgo.html#module-tryalgo.bellman_ford>`__
-minimum mean cycle          :math:`O(|V|\cdot |E|)` `Karp <http://www.sciencedirect.com/science/article/pii/0012365X78900110>`_    `min_mean_cycle <tryalgo/tryalgo.html#module-tryalgo.min_mean_cycle>`__
-Eulerian cycle              :math:`O(|V|+|E|)`      `Greedy <https://en.wikipedia.org/wiki/Eulerian_path>`_                        `eulerian_tour <tryalgo/tryalgo.html#module-tryalgo.eulerian_tour>`__
-=========================== ======================= ============================================================================== ===============
+=========================== ========== ======================= ============================================================================== ===============
+problem                     graph      complexity              algorithm                                                                      implementation
+=========================== ========== ======================= ============================================================================== ===============
+find a cycle                undirected :math:`O(|V| + |E|)`    depth-first search                                                             `find_cycle <tryalgo/tryalgo.html#module-tryalgo.dfs>`__
+shortest cycle              undirected :math:`O(|V|\cdot|E|)`  breath-first search                                                            `shortest_cycle <tryalgo/tryalgo.html#module-tryalgo.shortest_cycle>`__
+minimum weight cycle        directed   :math:`O(|V|\cdot |E|)` `Bellman-Ford <https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm>`_ `bellman_ford <tryalgo/tryalgo.html#module-tryalgo.bellman_ford>`__
+minimum mean cycle          directed   :math:`O(|V|\cdot |E|)` `Karp <http://www.sciencedirect.com/science/article/pii/0012365X78900110>`_    `min_mean_cycle <tryalgo/tryalgo.html#module-tryalgo.min_mean_cycle>`__
+Eulerian cycle              both       :math:`O(|V|+|E|)`      `Greedy <https://en.wikipedia.org/wiki/Eulerian_path>`_                        `eulerian_tour <tryalgo/tryalgo.html#module-tryalgo.eulerian_tour>`__
+=========================== ========== ======================= ============================================================================== ===============
 
 
 Shortest paths

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>tryalgo package &#8212; tryalgo 1.2 documentation</title>
+    <title>tryalgo package &#8212; tryalgo 1.3.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2',
+        VERSION:     '1.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="modules.html" title="tryalgo"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">tryalgo 1.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">tryalgo</a> &#187;</li> 
       </ul>
     </div>  
@@ -1359,27 +1359,6 @@ with a heap implementing item updates</p>
 <dt id="tryalgo.gauss_jordan.is_zero">
 <code class="descclassname">tryalgo.gauss_jordan.</code><code class="descname">is_zero</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/gauss_jordan.html#is_zero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.gauss_jordan.is_zero" title="Permalink to this definition">¶</a></dt>
 <dd><p>error tolerant zero test</p>
-</dd></dl>
-
-</div>
-<div class="section" id="module-tryalgo.girth">
-<span id="tryalgo-girth-module"></span><h2>tryalgo.girth module<a class="headerlink" href="#module-tryalgo.girth" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="tryalgo.girth.shortest_cycle">
-<code class="descclassname">tryalgo.girth.</code><code class="descname">shortest_cycle</code><span class="sig-paren">(</span><em>graph</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/girth.html#shortest_cycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.girth.shortest_cycle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finding a shortest cycle in an undirected graph</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>graph</strong> &#8211; undirected graph in listlist or listdict format</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None or a list C describing the a shortest cycle with C[0]==C[-1]</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Complexity:</th><td class="field-body"><cite>O(|V|*|E|)</cite></td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </div>
@@ -2834,35 +2813,28 @@ and O(len(s) * len(t)) in worst case</p>
 <dt id="tryalgo.range_minimum_query.LazySegmentTree">
 <em class="property">class </em><code class="descclassname">tryalgo.range_minimum_query.</code><code class="descname">LazySegmentTree</code><span class="sig-paren">(</span><em>tab</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/range_minimum_query.html#LazySegmentTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.range_minimum_query.LazySegmentTree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>maintains a tree to allow quick updates and queries on a table.
-This is more general than a Fenwick tree or a tree for MinRangeQuery.
-Here queries and updates act on ranges.
-Updates can be set and add.
-Queries can be max, min and sum.
-All operations run in time O(log n) for a the table size n.
+<p>maintains a tree to allow quick updates and queries on a table.</p>
+<p>This is more general than a Fenwick tree or a tree for MinRangeQuery. Here
+queries and updates act on index ranges. Updates can be set a range to a
+value or add a value to a range. Queries can be max, min and sum over an
+index range. All operations run in time O(log n) for a the table size n.
 The given ranges are in the form [i,j] where i is included and j excluded.
-In the recursive calls, node is the index of a node in the tree,
-and left, right its range.
-Values can be any numerical values allowing max, min, and sum,
-such as integers, floating point numbers or fractions (from the class Fraction).
-Updates over an empty range is valid and does nothing.
-Queryes over an empty range is valide and returns the neutral value -inf, +inf or 0.</p>
+In the recursive calls, node is the index of a node in the tree, and left,
+right its range. Values can be any numerical values allowing max, min, and
+sum, such as integers, floating point numbers or fractions (from the class
+Fraction). Updates over an empty range is valid and does nothing. Queries
+over an empty range is valid and returns the neutral value -inf, +inf or
+0.</p>
+<p>If the node is cleared, then maxval, minval, sumval represent for each
+node the query responses over the corresponding index ranges.  If the node
+is not clean, it means that lazyset and/or lazyadd contain suspendet
+update instructions for that node. Clearing a node means propagating these
+values to the descents in the subtrees, and updating maxval,minval and
+sumval for that node.</p>
 <dl class="method">
 <dt id="tryalgo.range_minimum_query.LazySegmentTree.add">
 <code class="descname">add</code><span class="sig-paren">(</span><em>i</em>, <em>j</em>, <em>val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/range_minimum_query.html#LazySegmentTree.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.range_minimum_query.LazySegmentTree.add" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="method">
-<dt id="tryalgo.range_minimum_query.LazySegmentTree.dump">
-<code class="descname">dump</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/range_minimum_query.html#LazySegmentTree.dump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.range_minimum_query.LazySegmentTree.dump" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="tryalgo.range_minimum_query.LazySegmentTree.maintain">
-<code class="descname">maintain</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/range_minimum_query.html#LazySegmentTree.maintain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.range_minimum_query.LazySegmentTree.maintain" title="Permalink to this definition">¶</a></dt>
-<dd><p>maintains the invariant for the given node
-:promize: the lazy values are None/0 for this node</p>
-</dd></dl>
 
 <dl class="method">
 <dt id="tryalgo.range_minimum_query.LazySegmentTree.max">
@@ -2873,14 +2845,6 @@ Queryes over an empty range is valide and returns the neutral value -inf, +inf o
 <dt id="tryalgo.range_minimum_query.LazySegmentTree.min">
 <code class="descname">min</code><span class="sig-paren">(</span><em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/range_minimum_query.html#LazySegmentTree.min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.range_minimum_query.LazySegmentTree.min" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="method">
-<dt id="tryalgo.range_minimum_query.LazySegmentTree.propagate">
-<code class="descname">propagate</code><span class="sig-paren">(</span><em>node</em>, <em>left</em>, <em>right</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/range_minimum_query.html#LazySegmentTree.propagate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.range_minimum_query.LazySegmentTree.propagate" title="Permalink to this definition">¶</a></dt>
-<dd><p>propagates the lazy updates for this node to the subtrees.
-as a result the maxval, minval, sumval values for the node
-are up to date.</p>
-</dd></dl>
 
 <dl class="method">
 <dt id="tryalgo.range_minimum_query.LazySegmentTree.set">
@@ -3050,6 +3014,52 @@ left &lt;= j &lt; right and top &lt;= i &lt;= bottom</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Complexity:</th><td class="field-body"><p class="first last">O(n log n)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tryalgo.shortest_cycle">
+<span id="tryalgo-shortest-cycle-module"></span><h2>tryalgo.shortest_cycle module<a class="headerlink" href="#module-tryalgo.shortest_cycle" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="tryalgo.shortest_cycle.shortest_cycle">
+<code class="descclassname">tryalgo.shortest_cycle.</code><code class="descname">shortest_cycle</code><span class="sig-paren">(</span><em>graph</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/shortest_cycle.html#shortest_cycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.shortest_cycle.shortest_cycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finding a shortest cycle in an undirected unweighted graph</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>graph</strong> &#8211; undirected graph in listlist or listdict format</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None or a list C describing a shortest cycle</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Complexity:</th><td class="field-body"><cite>O(|V|*|E|)</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="tryalgo.shortest_cycle.powergraph">
+<code class="descclassname">tryalgo.shortest_cycle.</code><code class="descname">powergraph</code><span class="sig-paren">(</span><em>graph</em>, <em>k</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tryalgo/shortest_cycle.html#powergraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tryalgo.shortest_cycle.powergraph" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Compute the k-th <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_power">powergraph</a></dt>
+<dd>which has an edge u,v for every vertex pair
+of distance at most k in the given graph.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph</strong> &#8211; undirected graph in listlist or listdict format</li>
+<li><strong>k</strong> &#8211; non-negative integer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Complexity:</th><td class="field-body"><p class="first last">O(V^3)</p>
 </td>
 </tr>
 </tbody>
@@ -3536,7 +3546,6 @@ faut avoir compris et codés en Python&#8221;, editor Ellipses.</p>
 <li><a class="reference internal" href="#module-tryalgo.freivalds">tryalgo.freivalds module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.gale_shapley">tryalgo.gale_shapley module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.gauss_jordan">tryalgo.gauss_jordan module</a></li>
-<li><a class="reference internal" href="#module-tryalgo.girth">tryalgo.girth module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.graph">tryalgo.graph module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.graph01">tryalgo.graph01 module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.horn_sat">tryalgo.horn_sat module</a></li>
@@ -3576,6 +3585,7 @@ faut avoir compris et codés en Python&#8221;, editor Ellipses.</p>
 <li><a class="reference internal" href="#module-tryalgo.rectangles_from_points">tryalgo.rectangles_from_points module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.roman_numbers">tryalgo.roman_numbers module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.scalar">tryalgo.scalar module</a></li>
+<li><a class="reference internal" href="#module-tryalgo.shortest_cycle">tryalgo.shortest_cycle module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.strongly_connected_components">tryalgo.strongly_connected_components module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.subsetsum">tryalgo.subsetsum module</a></li>
 <li><a class="reference internal" href="#module-tryalgo.subsetsum_divide">tryalgo.subsetsum_divide module</a></li>
@@ -3620,7 +3630,7 @@ faut avoir compris et codés en Python&#8221;, editor Ellipses.</p>
         <li class="right" >
           <a href="modules.html" title="tryalgo"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">tryalgo 1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">tryalgo 1.3.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >tryalgo</a> &#187;</li> 
       </ul>
     </div>

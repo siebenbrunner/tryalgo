@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Content of the library &#8212; tryalgo 1.2 documentation</title>
+    <title>Content of the library &#8212; tryalgo 1.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2',
+        VERSION:     '1.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to tryalgo’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">tryalgo 1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">tryalgo 1.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -85,7 +85,7 @@
 <p>Many problem on sequences (which are basically strings) can be solved with dynamic programming.
 A classical example is the computation of the <a class="reference external" href="https://en.wikipedia.org/wiki/Edit_distance">edit distance</a> (also called Levenshtein distance) between two given strings, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.levenshtein">levenshtein</a>.  Other examples include the longest common subsequence (<a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.longest_common_subsequence">longest_common_subsequence</a>) and the longest increasing subsequence (<a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.longest_increasing_subsequence">longest_increasing_subsequence</a>).</p>
 <p>A very easy problem consisting of computing the sorted union of two given sorted lists, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.merge_ordered_lists">merge_ordered_lists</a>.  In the area of caching it is interesting to compute maximal time intervals, where no cache fault happened. For this purpose one is given a list of items, and need to identify all inclusion wise maximal intervals that contain at most k distinct items.  This problem is solved with the sliding window technique, which we illustrate in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.windows_k_distinct">windows_k_distinct</a>.</p>
-<p>A data structure for an array is an object that stores the array (possibly in an implicit manner) and allows access and modification to the array, as well as different query operations.  For example the range minimum query structure permits to modify individual items of an array and to query the minimum in a given interval of indices.  This is solved generally with a segment tree, allowing logarithmic complexity (in the array size) for these operations, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.range_minimum_query">range_minimum_query</a>.</p>
+<p>A data structure for an array is an object that stores the array (possibly in an implicit manner) and allows access and modification to the array, as well as different query operations.  For example the range minimum query structure permits to modify individual items of an array and to query the minimum in a given interval of indices.  This is solved generally with a segment tree, allowing logarithmic complexity (in the array size) for these operations, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.range_minimum_query">range_minimum_query</a>.  There is a cute variant — called <cite>LazySegmentTree</cite> — which allows updates over index ranges, setting to a value or adding a value, and at the same time allows queries over index ranges, asking for the maximum, the minimum or the sum.</p>
 <p>A similar structure is the <a class="reference external" href="https://en.wikipedia.org/wiki/Fenwick_tree">Fenwick tree</a> also called BIT or binary indexed tree. It permits again to modify individual items of the array, but also to query the sum over a given interval of indices, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.fenwick">fenwick</a>.</p>
 </div>
 <div class="section" id="intervals">
@@ -116,13 +116,15 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 <p>The library contains implementations of 4 cycle finding algorithms.  The most basic problem consists of finding any cycle in a given undirected graph.  In the second problem we are given an edge weighted graph and want to compute a cycle of minimum total weight. For the third problem we want to minimize the total cycle weight over the cycle length. And in the last problem we want to find a cycle that visits every edge exactly once.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="14%" />
-<col width="12%" />
-<col width="39%" />
-<col width="36%" />
+<col width="13%" />
+<col width="5%" />
+<col width="11%" />
+<col width="37%" />
+<col width="34%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">problem</th>
+<th class="head">graph</th>
 <th class="head">complexity</th>
 <th class="head">algorithm</th>
 <th class="head">implementation</th>
@@ -130,21 +132,31 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>find a cycle</td>
+<td>undirected</td>
 <td><span class="math">\(O(|V| + |E|)\)</span></td>
 <td>depth-first search</td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.dfs">find_cycle</a></td>
 </tr>
-<tr class="row-odd"><td>minimum weight cycle</td>
+<tr class="row-odd"><td>shortest cycle</td>
+<td>undirected</td>
+<td><span class="math">\(O(|V|\cdot|E|)\)</span></td>
+<td>breath-first search</td>
+<td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.shortest_cycle">shortest_cycle</a></td>
+</tr>
+<tr class="row-even"><td>minimum weight cycle</td>
+<td>directed</td>
 <td><span class="math">\(O(|V|\cdot |E|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm">Bellman-Ford</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.bellman_ford">bellman_ford</a></td>
 </tr>
-<tr class="row-even"><td>minimum mean cycle</td>
+<tr class="row-odd"><td>minimum mean cycle</td>
+<td>directed</td>
 <td><span class="math">\(O(|V|\cdot |E|)\)</span></td>
 <td><a class="reference external" href="http://www.sciencedirect.com/science/article/pii/0012365X78900110">Karp</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.min_mean_cycle">min_mean_cycle</a></td>
 </tr>
-<tr class="row-odd"><td>Eulerian cycle</td>
+<tr class="row-even"><td>Eulerian cycle</td>
+<td>both</td>
 <td><span class="math">\(O(|V|+|E|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Eulerian_path">Greedy</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.eulerian_tour">eulerian_tour</a></td>
@@ -372,7 +384,7 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
         <li class="right" >
           <a href="index.html" title="Welcome to tryalgo’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">tryalgo 1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">tryalgo 1.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

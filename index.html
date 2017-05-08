@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to tryalgo’s documentation! &#8212; tryalgo 1.2 documentation</title>
+    <title>Welcome to tryalgo’s documentation! &#8212; tryalgo 1.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2',
+        VERSION:     '1.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="content.html" title="Content of the library"
              accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">tryalgo 1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">tryalgo 1.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -72,16 +72,36 @@
 <div class="section" id="from-pypi">
 <h3>From PyPI<a class="headerlink" href="#from-pypi" title="Permalink to this headline">¶</a></h3>
 <p>Download the <a class="reference external" href="https://pypi.python.org/pypi/tryalgo/">tar.gz file from PyPI</a> and extract it.  The library consists of a directory named <cite>tryalgo</cite> containing several Python modules.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content.html">Content of the library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content.html#basic-algorithms-and-data-structures">Basic algorithms and data structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#strings">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#sequences-and-arrays">Sequences and Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#intervals">Intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#graphs">Graphs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#cycles">Cycles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#shortest-paths">Shortest paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#matching-flows-and-related">Matching, flows and related</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#trees">Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#geometry">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#arithmetic">Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content.html#backtracking">Backtracking</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="first-steps">
 <h2>First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="coin-change">
 <h3>Coin change<a class="headerlink" href="#coin-change" title="Permalink to this headline">¶</a></h3>
-<p>Here is an dynamic programming example, with coin change (<a class="reference external" href="tryalgo/subsetsum.html#coin_change">6 lines of source code</a>):</p>
+<p>Here is an dynamic programming example, with coin change (<a class="reference external" href="_modules/tryalgo/subsetsum.html#coin_change">6 lines of source code</a>):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 
-<span class="kn">from</span> <span class="nn">tryalgo.subsetsum</span> <span class="k">import</span> <span class="n">coin_change</span>
+<span class="kn">from</span> <span class="nn">tryalgo</span> <span class="k">import</span> <span class="n">coin_change</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">coin_change</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span> <span class="mi">29</span><span class="p">))</span>
 </pre></div>
@@ -90,8 +110,8 @@
 </div>
 <div class="section" id="longest-palindrome-substring-of-a-string">
 <h3>Longest palindrome substring of a string<a class="headerlink" href="#longest-palindrome-substring-of-a-string" title="Permalink to this headline">¶</a></h3>
-<p>In order to find the longest palindrome substring of a string, you can use the implementation of Manacher&#8217;s algorithm (<a class="reference external" href="tryalgo/manacher.html#manacher">source</a>) as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tryalgo.manacher</span> <span class="k">import</span> <span class="n">manacher</span>
+<p>In order to find the longest palindrome substring of a string, you can use the implementation of Manacher&#8217;s algorithm (<a class="reference external" href="_modules/tryalgo/manacher.html#manacher">source</a>) as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tryalgo</span> <span class="k">import</span> <span class="n">manacher</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">manacher</span><span class="p">(</span><span class="s2">&quot;babcbabcbaccba&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -132,7 +152,7 @@
 </pre></div>
 </div>
 <p>The shortest path can be computed using Dijkstra&#8217;s algorithm, also known as <em>lowest-cost search</em>.  Our implementation returns the table of distances from the source and a predecessor table describing the shortest path tree:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tryalgo.dijkstra</span> <span class="k">import</span> <span class="n">dijkstra</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tryalgo</span> <span class="k">import</span> <span class="n">dijkstra</span>
 
 <span class="n">dist</span><span class="p">,</span> <span class="n">prec</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
@@ -167,26 +187,6 @@ We call this graph format <em>listdict</em>. For example, the above graph would 
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="content.html">Content of the library</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="content.html#basic-algorithms-and-data-structures">Basic algorithms and data structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#strings">Strings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#sequences-and-arrays">Sequences and Arrays</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#intervals">Intervals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#graphs">Graphs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#cycles">Cycles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#shortest-paths">Shortest paths</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#matching-flows-and-related">Matching, flows and related</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#trees">Trees</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#sets">Sets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#geometry">Geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#arithmetic">Arithmetic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content.html#backtracking">Backtracking</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="tryalgo/modules.html">tryalgo</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tryalgo/tryalgo.html">tryalgo package</a></li>
 </ul>
@@ -217,9 +217,7 @@ We call this graph format <em>listdict</em>. For example, the above graph would 
 <li><a class="reference internal" href="#first-steps">First steps</a><ul>
 <li><a class="reference internal" href="#coin-change">Coin change</a></li>
 <li><a class="reference internal" href="#longest-palindrome-substring-of-a-string">Longest palindrome substring of a string</a></li>
-<li><a class="reference internal" href="#pathfinding">Pathfinding</a><ul>
-</ul>
-</li>
+<li><a class="reference internal" href="#pathfinding">Pathfinding</a></li>
 </ul>
 </li>
 </ul>
@@ -255,7 +253,7 @@ We call this graph format <em>listdict</em>. For example, the above graph would 
         <li class="right" >
           <a href="content.html" title="Content of the library"
              >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">tryalgo 1.2 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="#">tryalgo 1.3.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
