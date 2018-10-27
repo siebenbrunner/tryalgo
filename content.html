@@ -1,75 +1,186 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Content of the library &mdash; tryalgo 1.3.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
     
-    <title>Content of the library &#8212; tryalgo 1.3.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.3.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="tryalgo" href="tryalgo/modules.html" />
     <link rel="prev" title="Welcome to tryalgo’s documentation!" href="index.html" /> 
-  </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="tryalgo/modules.html" title="tryalgo"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Welcome to tryalgo’s documentation!"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">tryalgo 1.3.0 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> tryalgo
+          
+
+          
+            
+            <img src="_static/logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Content of the library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-algorithms-and-data-structures">Basic algorithms and data structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strings">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sequences-and-arrays">Sequences and Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#intervals">Intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#graphs">Graphs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cycles">Cycles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shortest-paths">Shortest paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#matching-flows-and-related">Matching, flows and related</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#trees">Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sets">Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#geometry">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arithmetic">Arithmetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backtracking">Backtracking</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#last-words">Last words</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tryalgo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Content of the library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="content-of-the-library">
 <h1>Content of the library<a class="headerlink" href="#content-of-the-library" title="Permalink to this headline">¶</a></h1>
-<p>The main purpose of this library is to present easy-to-implement-algorithms.  So priority was put on simplicity and readability, rather than on efficiency for example.  For example even though Dijkstra&#8217;s shortest path algorithm has the best worst case time complexity when implemented with a Fibonacci heap, we choose simpler implementations, which have worse but still acceptable time complexities.</p>
+<p>The main purpose of this library is to present easy-to-implement-algorithms.  So priority was put on simplicity and readability, rather than on efficiency for example.  For example even though Dijkstra’s shortest path algorithm has the best worst case time complexity when implemented with a Fibonacci heap, we choose simpler implementations, which have worse but still acceptable time complexities.</p>
 <p>The content of <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.freivalds">our library</a> is organized by problem classes as follows.</p>
 <div class="section" id="basic-algorithms-and-data-structures">
 <h2>Basic algorithms and data structures<a class="headerlink" href="#basic-algorithms-and-data-structures" title="Permalink to this headline">¶</a></h2>
-<p>We illustrate how to read from standard input and write to standard output, using Freivald&#8217;s test, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.freivalds">freivalds</a>.  Given n by n matrices A,B,C the goal is to decide whether AB=C.  A naive test would have a time complexity of <span class="math">\(O(n^3)\)</span>.  But <a class="reference external" href="https://en.wikipedia.org/wiki/Freivalds%27_algorithm">Freivald&#8217;s test</a>, generates a random vector x and tests in time <span class="math">\(O(n^2)\)</span> if <span class="math">\(ABx=Cx\)</span>.  It can be shown that the probability that the tests fails to detect difference in AB and in C is negligibly small.</p>
+<p>We illustrate how to read from standard input and write to standard output, using Freivald’s test, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.freivalds">freivalds</a>.  Given n by n matrices A,B,C the goal is to decide whether AB=C.  A naive test would have a time complexity of <span class="math notranslate nohighlight">\(O(n^3)\)</span>.  But <a class="reference external" href="https://en.wikipedia.org/wiki/Freivalds%27_algorithm">Freivald’s test</a>, generates a random vector x and tests in time <span class="math notranslate nohighlight">\(O(n^2)\)</span> if <span class="math notranslate nohighlight">\(ABx=Cx\)</span>.  It can be shown that the probability that the tests fails to detect difference in AB and in C is negligibly small.</p>
 <p>A simple implementation of a first-in-first-out queue is presented in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.our_queue">our_queue</a>, as well as of a heap in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.our_heap">our_heap</a>.</p>
-<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure">union-find structure</a> permits to maintain a partitioning of n items (typically vertices of a graph), and implements the operation <code class="code docutils literal"><span class="pre">union(x,y)</span></code> to merge the two sets containing x and y, as well as <code class="code docutils literal"><span class="pre">find(x)</span></code> to return a canonical element of the set containing x. It is implemented in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.kruskal">kruskal</a>.</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure">union-find structure</a> permits to maintain a partitioning of n items (typically vertices of a graph), and implements the operation <code class="code docutils literal notranslate"><span class="pre">union(x,y)</span></code> to merge the two sets containing x and y, as well as <code class="code docutils literal notranslate"><span class="pre">find(x)</span></code> to return a canonical element of the set containing x. It is implemented in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.kruskal">kruskal</a>.</p>
 <p>Python orders tuples lexicographically. We illustrate this in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.majority">majority</a> with a small example identifying a majority element in a given list.  It is quite simple to sort a list in python, we illustrate this in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.closest_values">closest_values</a> a small example identifying two closest values of a given list.</p>
 <p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Sweep_line_algorithm">sweepline algorithmic technique</a> is important for many computational geometric problems. In <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.max_interval_intersec">max_interval_intersec</a> we illustrate it on the problem of computing a value that is contained in a maximum number of intervals among a given set of intervals.</p>
 <p>Other important techniques, include the greedy algorithm, which we illustrate in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.scalar">scalar</a> on the problem of permuting a vector x, so to minimize the scalar product with a given vector y.</p>
 <p>Sometimes it is convenient to encode sets over a small universe as bit vectors in integers.  We illustrate this technique on the problem of generating an arithmetic expression with a small given set of values to reach as close as possible some target value, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.arithm_expr_target">arithm_expr_target</a>.</p>
 <p>In <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.binary_search">binary_search</a> we illustrate different variants of binary search or variants.  For example ternary_search permits to find the maximum of a bitonic function in logarithmic time in the size of the search interval.</p>
-<p>A very interesting data structure is called <cite>PartitionRefinement &lt;tryalgo/tryalgo.html#module-tryalgo.partition_refinement&gt;</cite>.  It maintains a partition over the set {0,1,...,n-1}.  The main operation is called <em>refine(S)</em> which splits each part P of the current partition into elements that are in S and elements that are not in S.  The complexity of this operation is linear in the size of S.</p>
+<p>A very interesting data structure is called <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.partition_refinement">PartitionRefinement</a>.  It maintains a partition over the set {0,1,…,n-1}.  The main operation is called <em>refine(S)</em> which splits each part P of the current partition into elements that are in S and elements that are not in S.  The complexity of this operation is linear in the size of S.</p>
 </div>
 <div class="section" id="strings">
 <h2>Strings<a class="headerlink" href="#strings" title="Permalink to this headline">¶</a></h2>
@@ -97,7 +208,7 @@ A classical example is the computation of the <a class="reference external" href
 <h2>Graphs<a class="headerlink" href="#graphs" title="Permalink to this headline">¶</a></h2>
 <p>For this library we decided to encode graphs using in two different manners, at your convenience.
 In the <cite>adjacency list</cite> a graph on n vertices is encoded as a list of n elements, where the i-th element is the adjacency list of the i-th vertex.  Labels on edges or on vertices are stored in separate matrices or lists.  We call it the <em>listlist</em> graph format.  In contrast in the <cite>adjacency dictionary</cite> a graph is encoded as a list of n dictionary, such that the keys of the i-th dictionary are the neighbors of the i-th vertex, and the values are the attached edge weights.  We call this one the <em>listdict</em> graph format.  Undirected graphs are represented as directed graphs by duplicating each edge into two opposite facing arcs.  All functions in our library work with the <em>listlist</em> graph format, and most work also with the <em>listdict</em> graph format. This is documented for each function.</p>
-<p>Some graph libraries, like <a class="reference external" href="https://www.ics.uci.edu/~eppstein/PADS/">PADS</a>, choose to represent graphs as dictionaries, where <code class="code docutils literal"><span class="pre">graph[u]</span></code> would again be a dictionary mapping each neighbor <code class="code docutils literal"><span class="pre">v</span></code> to the arc weight <code class="code docutils literal"><span class="pre">graph[u][v]</span></code>.  In this representation, nodes can be any hashable objects, like strings for example, or tuples. We call it the <em>dictdict</em> graph format, and provide functions to convert between the different graph representations, namely
+<p>Some graph libraries, like <a class="reference external" href="https://www.ics.uci.edu/~eppstein/PADS/">PADS</a>, choose to represent graphs as dictionaries, where <code class="code docutils literal notranslate"><span class="pre">graph[u]</span></code> would again be a dictionary mapping each neighbor <code class="code docutils literal notranslate"><span class="pre">v</span></code> to the arc weight <code class="code docutils literal notranslate"><span class="pre">graph[u][v]</span></code>.  In this representation, nodes can be any hashable objects, like strings for example, or tuples. We call it the <em>dictdict</em> graph format, and provide functions to convert between the different graph representations, namely
 <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.graph">matrix_to_listlist</a>,
 <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.graph">listlist_and_matrix_to_listdict</a>,
 <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.graph">listdict_to_listlist_and_matrix</a>,
@@ -105,7 +216,7 @@ In the <cite>adjacency list</cite> a graph on n vertices is encoded as a list of
 <p>We use several representations for trees.  A tree can be represented as an adjacency table, as a graph.  In case the tree is rooted, it can be represented in form of a node structure that contains references to descendant nodes, or in form of an antecedent table, storing at index i the antecedent vertex of the i-th vertex in the tree, using <cite>None</cite> for the root.</p>
 <p>In <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.graph">graph</a> we provide several helper functions to read a graph from a file, or to write it into a file in the <a class="reference external" href="http://www.graphviz.org/">DOT format</a>.  This module contains also functions to convert between different tree representations and between graph representations.</p>
 <p>Important operations on graphs are explorations along the edges, for examples to detect connected components, or shortest paths.  The depth first search is implemented in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.dfs">dfs</a>, and illustrated in its iterative and recursive form, as well as the special case of exploring grids.  The breadth-first search is implemented in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.bfs">bfs</a>.</p>
-<p>The problem of detecting the connected components in a graph is best solved using Kruskal&#8217;s algorithm, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.kruskal">kruskal</a>.</p>
+<p>The problem of detecting the connected components in a graph is best solved using Kruskal’s algorithm, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.kruskal">kruskal</a>.</p>
 <p>A cut vertex is a vertex which removal splits a connected components.  A cut edge is defined similarly.  Detecting cut vertices and cut edges is important in order to determine <a class="reference external" href="https://en.wikipedia.org/wiki/Biconnected_component">biconnected components</a>, which are particular vertex sets such that each pair of vertices is connected by two vertex disjoint paths.  These sets are important for communication networks.  A subtle modification of the depth first search permits to detect these cut vertices and cut edges, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.biconnected_components">biconnected_components</a>.</p>
 <p>For directed graphs there are two important problems.  The first one is the <a class="reference external" href="https://en.wikipedia.org/wiki/Topological_sorting">topological sorting</a>, which consists in ordering the vertices, such that every arc points only from left to right, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.topological_order">topological_order</a>.</p>
 <p>Another important problem consists in determining strongly connected components, which are vertex sets such that for each vertex pair there is a directed path connecting them.  These can be computed by an algorithm by Tarjan or by an algorithm by Kosaraju, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.strongly_connected_components">strongly_connected_components</a>.  The main application is the resolution of 2-SAT boolean formulas, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.two_sat">two_sat</a>.
@@ -133,31 +244,31 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 <tbody valign="top">
 <tr class="row-even"><td>find a cycle</td>
 <td>undirected</td>
-<td><span class="math">\(O(|V| + |E|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|V| + |E|)\)</span></td>
 <td>depth-first search</td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.dfs">find_cycle</a></td>
 </tr>
 <tr class="row-odd"><td>shortest cycle</td>
 <td>undirected</td>
-<td><span class="math">\(O(|V|\cdot|E|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|V|\cdot|E|)\)</span></td>
 <td>breath-first search</td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.shortest_cycle">shortest_cycle</a></td>
 </tr>
 <tr class="row-even"><td>minimum weight cycle</td>
 <td>directed</td>
-<td><span class="math">\(O(|V|\cdot |E|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|V|\cdot |E|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm">Bellman-Ford</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.bellman_ford">bellman_ford</a></td>
 </tr>
 <tr class="row-odd"><td>minimum mean cycle</td>
 <td>directed</td>
-<td><span class="math">\(O(|V|\cdot |E|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|V|\cdot |E|)\)</span></td>
 <td><a class="reference external" href="http://www.sciencedirect.com/science/article/pii/0012365X78900110">Karp</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.min_mean_cycle">min_mean_cycle</a></td>
 </tr>
 <tr class="row-even"><td>Eulerian cycle</td>
 <td>both</td>
-<td><span class="math">\(O(|V|+|E|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|V|+|E|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Eulerian_path">Greedy</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.eulerian_tour">eulerian_tour</a></td>
 </tr>
@@ -166,7 +277,7 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 </div>
 <div class="section" id="shortest-paths">
 <h2>Shortest paths<a class="headerlink" href="#shortest-paths" title="Permalink to this headline">¶</a></h2>
-<p>Several shortest path algorithms are included in the library, which apply for different classes of graphs.  They are summarized in the following table. For the complexity indication we assume that <span class="math">\(|E|\geq |V|\)</span>.</p>
+<p>Several shortest path algorithms are included in the library, which apply for different classes of graphs.  They are summarized in the following table. For the complexity indication we assume that <span class="math notranslate nohighlight">\(|E|\geq |V|\)</span>.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="14%" />
@@ -183,32 +294,32 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>unweighted graph</td>
-<td><span class="math">\(O(|E|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|E|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Breadth-first_search">breadth-first search</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.bfs">bfs</a></td>
 </tr>
 <tr class="row-odd"><td>grid</td>
-<td><span class="math">\(O(|E|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|E|)\)</span></td>
 <td>breadth-first search adapted to the grid graph</td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.dist_grid">dist_grid</a></td>
 </tr>
 <tr class="row-even"><td>{0,1} weighted graph</td>
-<td><span class="math">\(O(|E|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|E|)\)</span></td>
 <td><a class="reference external" href="http://goo.gl/w67Hs1">Dijkstra with a deque</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.graph01">graph01</a></td>
 </tr>
 <tr class="row-odd"><td>non negative weighted graph</td>
-<td><span class="math">\(O(|E| \log |V|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|E| \log |V|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.dijkstra">dijkstra</a></td>
 </tr>
 <tr class="row-even"><td>arbitrary weighted graph</td>
-<td><span class="math">\(O(|E| \cdot |V|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|E| \cdot |V|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm">Bellman-Ford</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.bellman_ford">bellman_ford</a></td>
 </tr>
 <tr class="row-odd"><td>all source destination pairs</td>
-<td><span class="math">\(O(|V|^3)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|V|^3)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Floyd-Warshall_algorithm">Floyd-Warshall</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.floyd_warshall">floyd_warshall</a></td>
 </tr>
@@ -233,42 +344,42 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>maximum cardinality bipartite matching</td>
-<td><span class="math">\(O(|E|\cdot|V|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|E|\cdot|V|)\)</span></td>
 <td><a class="reference external" href="https://goo.gl/lGtp9f">augmenting path algorithm</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.bipartite_matching">bipartite_matching</a></td>
 </tr>
 <tr class="row-odd"><td>minimum bipartite vertex cover</td>
-<td><span class="math">\(O(|E|\cdot|V|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|E|\cdot|V|)\)</span></td>
 <td><a class="reference external" href="goo.gl/AkBUQH">reduction to matching</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.bipartite_vertex_cover">bipartite_vertex_cover</a></td>
 </tr>
 <tr class="row-even"><td>maximum profit bipartite matching</td>
-<td><span class="math">\(O(|V|^3)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|U|^2|V|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Hungarian_algorithm">Hungarian algorithm</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.kuhn_munkres">kuhn_munkres</a></td>
 </tr>
 <tr class="row-odd"><td>stable bipartite matching</td>
-<td><span class="math">\(O(|V|^2)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|V|^2)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Stable_marriage_problem">Gale-Shapley</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.gale_shapley">gale_shapley</a></td>
 </tr>
-<tr class="row-even"><td>max flow capacities in {1,...,C}</td>
-<td><span class="math">\(O(|V|\cdot|E|\cdot|C|)\)</span></td>
+<tr class="row-even"><td>max flow capacities in {1,…,C}</td>
+<td><span class="math notranslate nohighlight">\(O(|V|\cdot|E|\cdot|C|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Ford-Fulkerson_algorithm">Ford-Fulkerson</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.ford_fulkerson">ford_fulkerson</a></td>
 </tr>
 <tr class="row-odd"><td>max flow arbitrary capacities</td>
-<td><span class="math">\(O(|V|\cdot|E|^2)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|V|\cdot|E|^2)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Edmonds-Karp_algorithm">Edmonds-Karp</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.edmonds_karp">edmonds_karp</a></td>
 </tr>
 <tr class="row-even"><td>max flow arbitrary capacities</td>
-<td><span class="math">\(O(|V|^2\cdot|E|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|V|^2\cdot|E|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Dinic%27s_algorithm">Dinic</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.dinic">dinic</a></td>
 </tr>
 <tr class="row-odd"><td>minimum paths decomposition of a directed acyclic graph</td>
-<td><span class="math">\(O(|E|\cdot|V|)\)</span></td>
+<td><span class="math notranslate nohighlight">\(O(|E|\cdot|V|)\)</span></td>
 <td><a class="reference external" href="https://en.wikipedia.org/wiki/Dilworth%27s_theorem">Dilworth</a></td>
 <td><a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.dilworth">dilworth</a></td>
 </tr>
@@ -278,17 +389,19 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 <div class="section" id="trees">
 <h2>Trees<a class="headerlink" href="#trees" title="Permalink to this headline">¶</a></h2>
 <p>A classical example of a problem solved by the greedy algorithm is the problem of constructing optimal <a class="reference external" href="https://en.wikipedia.org/wiki/Huffman_coding">Huffman codes</a>.  An implementation can be found in the module <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.huffman">huffman</a>.</p>
-<p>Another example, which is as classical and famous, is the problem of constructing a <a class="reference external" href="https://en.wikipedia.org/wiki/Minimum_spanning_tree">minimum weight spanning tree</a> for a given edge weighted connected graph.  It is solved with the greedy Kruskal&#8217;s algorithm, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.kruskal">kruskal</a>.</p>
-<p>The lowest common ancestor problem consists of building a data structure that stores a rooted tree and can answer efficiently queries of the form: &#8220;Which vertex is the closest common ancestor to two given vertices&#8221;.  The most elegant solution consists in a reduction to the minimum range query problem, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.lowest_common_ancestor">lowest_common_ancestor</a>.</p>
+<p>Another example, which is as classical and famous, is the problem of constructing a <a class="reference external" href="https://en.wikipedia.org/wiki/Minimum_spanning_tree">minimum weight spanning tree</a> for a given edge weighted connected graph.  It is solved with the greedy Kruskal’s algorithm, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.kruskal">kruskal</a>.</p>
+<p>The lowest common ancestor problem consists of building a data structure that stores a rooted tree and can answer efficiently queries of the form: “Which vertex is the closest common ancestor to two given vertices”.  The most elegant solution consists in a reduction to the minimum range query problem, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.lowest_common_ancestor">lowest_common_ancestor</a>.</p>
 </div>
 <div class="section" id="sets">
 <h2>Sets<a class="headerlink" href="#sets" title="Permalink to this headline">¶</a></h2>
+<p>A simple data structure to store an ordered set allowing insertions and deletions is the <a class="reference external" href="tryalgo/tryalo.html#module-tryalgo.skip_tree">skip tree</a>. The expected cost of an update is <span class="math notranslate nohighlight">\(O(\log n)\)</span>.</p>
 <p>Many problems defined on sets can be solved by dynamic programming. This is the case of the <a class="reference external" href="https://en.wikipedia.org/wiki/Knapsack_problem">Knapsack problem</a>. We are given n items, each has a size and a value, and we wish to find a subset of maximum total value which size does not exceed a given capacity C.  This problem is NP-hard, but can be solved efficiently in time O(nC) if the capacity is bounded by a small value, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.knapsack">knapsack</a>.</p>
-<p>In the coin change problem, we are given a collection of coins of n different values and unbounded number of coins for each value and a target value C.  The goal is to find a set of coins of total value C.  Again this problem can be solved by dynamic programming in time O(nC), see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.subsetsum">subsetsum</a>.  A similar problem is called the <a class="reference external" href="https://en.wikipedia.org/wiki/Subset_sum_problem">subset sum problem</a> and consists of finding a subset out of n given values that sum up to a target value C.  It can be solved with the same method.  When n is small and C large, there is a different algorithm with complexity <span class="math">\(O(n^{\lceil n/2 \rceil})\)</span>, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.subsetsum_divide">subsetsum_divide</a>.</p>
+<p>In the coin change problem, we are given a collection of coins of n different values and unbounded number of coins for each value and a target value C.  The goal is to find a set of coins of total value C.  Again this problem can be solved by dynamic programming in time O(nC), see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.subsetsum">subsetsum</a>.  A similar problem is called the <a class="reference external" href="https://en.wikipedia.org/wiki/Subset_sum_problem">subset sum problem</a> and consists of finding a subset out of n given values that sum up to a target value C.  It can be solved with the same method.  When n is small and C large, there is a different algorithm with complexity <span class="math notranslate nohighlight">\(O(n^{\lceil n/2 \rceil})\)</span>, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.subsetsum_divide">subsetsum_divide</a>.</p>
+<p>An interesting problem with sets, which has also a connection with intervals graphs, consists in finding a total order on a ground set such that every given subset is consecutive in this ground set. This problem can be solved using <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.pq_tree">PQ trees</a>.</p>
 </div>
 <div class="section" id="geometry">
 <h2>Geometry<a class="headerlink" href="#geometry" title="Permalink to this headline">¶</a></h2>
-<p>A very classical problem in computational geometry is the computation of the convex hull of a given point set in the Euclidean space. Generally text books present Graham&#8217;s algorithm.  But for this library we made the choice of Andrew&#8217;s sweepline algorithm, which has the advantage of avoiding trigonometric operations, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.convex_hull">convex_hull</a>.  (With some work Graham&#8217;s algorithm can also be implemented without trigonometric operations, but it is a bit more tricky than Andrew&#8217;s algorithm.)</p>
+<p>A very classical problem in computational geometry is the computation of the convex hull of a given point set in the Euclidean space. Generally text books present Graham’s algorithm.  But for this library we made the choice of Andrew’s sweepline algorithm, which has the advantage of avoiding trigonometric operations, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.convex_hull">convex_hull</a>.  (With some work Graham’s algorithm can also be implemented without trigonometric operations, but it is a bit more tricky than Andrew’s algorithm.)</p>
 <p>Another not less classical problem is the problem of determining a closest pair among a given point set.  It can be solved in time O(n log n) with a sweep line algorithm or using a divide and conquer approach.  In this library we present a randomized very simple algorithm with an expected linear running time, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.closest_points">closest_points</a>.</p>
 <p>The area of a given simple polygon can be computed in linear time, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.polygon">polygon</a>.  And testing whether a given rectilinear polygon is simple can be verified with a sweepline algorithm in time O(n log n), see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.polygon">is_simple</a>.</p>
 <p>Here is an algorithmic puzzle that we like a lot. Given a set of n points in the plane, we which to find out how many 4-tuples we can form such that they are the 4 corners of a rectangle.  The solution can be found in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.rectangles_from_points">rectangles_from_points</a>.</p>
@@ -297,7 +410,7 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 </div>
 <div class="section" id="arithmetic">
 <h2>Arithmetic<a class="headerlink" href="#arithmetic" title="Permalink to this headline">¶</a></h2>
-<p>Prime numbers are best generated with Eratosthene&#8217;s method, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.eratosthene">eratosthene</a>.</p>
+<p>All prime numbers less than some given integer n are easily generated with Eratosthene’s method, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.primes">primes</a>.  Its complexity is  <span class="math notranslate nohighlight">\(O(n \log\log n)\)</span>.  This is improved by the Gries-Misra sieve which not only has complexity  <span class="math notranslate nohighlight">\(O(n)\)</span>, but also produces a table indicating for every positive integer less than n, its smallest prime factor.</p>
 <p>The library contains functions to compute the greatest common divisor (GCD in english or PGCD in french), to compute the Bezot coefficients and the binomial coefficients, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.arithm">arithm</a>.</p>
 <p>Fast exponentiation is a very powerful technique, which applies also to exponentiation of matrices, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.fast_exponentiation">fast_exponentiation</a>.</p>
 <p>An arithmetic expression given in form of a string can be evaluated in different manners. The library contains a simple method using a stack for the operations and for the intermediate values, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.arithm_expr_eval">arithm_expr_eval</a>.</p>
@@ -309,7 +422,7 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 <h2>Backtracking<a class="headerlink" href="#backtracking" title="Permalink to this headline">¶</a></h2>
 <p>Sometimes all our known techniques fail on some problems, and then we need to attack it with brute force and backtracking.  This technique is illustrated in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.laser_mirrors">laser_mirrors</a> on a problem consisting of a grid containing in some cells two sided mirrors which can be oriented at angles 45 or 225 degrees.  The goal is to find an orientation which permits to orient the trajectory of a laser beam entering at a specific position on the left border of the grid, so it reaches a specific position on the right side of the grid.</p>
 <p>The Rolls-Royce of backtracking algorithms is the dancing link algorithm, which solves quite efficiently the NP-hard problem /exact set cover/.  It is implemented in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.dancing_links">dancing_links</a> and is illustrated on the classical Sudoku problem in <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.sudoku">sudoku</a>.</p>
-<p>Finally a useful procedure is <code class="xref py py-func docutils literal"><span class="pre">next_permutation()</span></code> which takes as input a table of size n containing a permutation of the integers 1 to n and puts them in the lexicographically next permutation order, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.next_permutation">next_permutation</a>.</p>
+<p>Finally a useful procedure is <code class="xref py py-func docutils literal notranslate"><span class="pre">next_permutation()</span></code> which takes as input a table of size n containing a permutation of the integers 1 to n and puts them in the lexicographically next permutation order, see <a class="reference external" href="tryalgo/tryalgo.html#module-tryalgo.next_permutation">next_permutation</a>.</p>
 <div class="section" id="last-words">
 <h3>Last words<a class="headerlink" href="#last-words" title="Permalink to this headline">¶</a></h3>
 <p>We hope that you find the library instructive and useful.  If you miss some functionality, let us know, and you might want to have a look at <a class="reference external" href="http://www.ics.uci.edu/~eppstein/PADS/">PADS</a>. and <a class="reference external" href="https://pypi.python.org/pypi/networkx/">NetworkX</a>.</p>
@@ -318,78 +431,60 @@ Another polynomial variant of SAT is Horn-SAT, see  <a class="reference external
 </div>
 
 
+           </div>
+           
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/logo_white.png" alt="Logo"/>
-            </a></p>
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Content of the library</a><ul>
-<li><a class="reference internal" href="#basic-algorithms-and-data-structures">Basic algorithms and data structures</a></li>
-<li><a class="reference internal" href="#strings">Strings</a></li>
-<li><a class="reference internal" href="#sequences-and-arrays">Sequences and Arrays</a></li>
-<li><a class="reference internal" href="#intervals">Intervals</a></li>
-<li><a class="reference internal" href="#graphs">Graphs</a></li>
-<li><a class="reference internal" href="#cycles">Cycles</a></li>
-<li><a class="reference internal" href="#shortest-paths">Shortest paths</a></li>
-<li><a class="reference internal" href="#matching-flows-and-related">Matching, flows and related</a></li>
-<li><a class="reference internal" href="#trees">Trees</a></li>
-<li><a class="reference internal" href="#sets">Sets</a></li>
-<li><a class="reference internal" href="#geometry">Geometry</a></li>
-<li><a class="reference internal" href="#arithmetic">Arithmetic</a></li>
-<li><a class="reference internal" href="#backtracking">Backtracking</a><ul>
-<li><a class="reference internal" href="#last-words">Last words</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to tryalgo’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Welcome to tryalgo&#8217;s documentation!</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="tryalgo/modules.html"
-                        title="next chapter">tryalgo</a></p>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2018, Christoph Dürr and Jill-Jênn Vie
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="tryalgo/modules.html" title="tryalgo"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="Welcome to tryalgo’s documentation!"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">tryalgo 1.3.0 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2016, Christoph Dürr and Jill-Jênn Vie.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
