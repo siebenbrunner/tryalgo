@@ -33,7 +33,7 @@ from tryalgo.edmonds_karp import edmonds_karp
 from tryalgo.eulerian_tour import eulerian_tour_directed, random_eulerien_graph, is_eulerian_tour
 from tryalgo.fast_exponentiation import fast_exponentiation, fast_exponentiation2
 from tryalgo.fenwick import Fenwick
-from tryalgo.floyd_warshall import floyd_warshall
+from tryalgo.floyd_warshall import floyd_warshall, floyd_warshall2
 from tryalgo.ford_fulkerson import ford_fulkerson
 from tryalgo.freivalds import freivalds
 from tryalgo.gale_shapley import gale_shapley
@@ -82,13 +82,14 @@ from tryalgo.shortest_cycle import shortest_cycle, powergraph
 from tryalgo.skip_list import SortedSet, SortedDict
 from tryalgo.strongly_connected_components import tarjan, kosaraju, tarjan_recursif
 from tryalgo.subsetsum_divide import subset_sum as subset_sum1
-from tryalgo.subsetsum import subset_sum as subset_sum2, coin_change
+from tryalgo.subsetsum_divide import subset_sum2 as subset_sum2
+from tryalgo.subsetsum import subset_sum as subset_sum3, coin_change
 from tryalgo.sudoku import sudoku
 from tryalgo.three_partition import three_partition
 from tryalgo.topological_order import topological_order_dfs, topological_order
 from tryalgo.trie import Trie, spell_check
 from tryalgo.two_sat import two_sat
-from tryalgo.union_rectangles import union_rectangles
+from tryalgo.union_rectangles import union_rectangles_naive, union_rectangles, union_rectangles_fast, union_rectangles_fastest
 from tryalgo.windows_k_distinct import windows_k_distinct
 
 
@@ -619,22 +620,23 @@ t##
             self.assertEqual( f(7, 2323474, 1000000000), 428796849 )
 
     def test_fenwick(self):
-        F = Fenwick([0, 1, 2, 4, 8, 16, 32, 64, 128, 256])
-        self.assertEqual( bin(F.intervalSum(3, 7)), "0b1111100" )
-        self.assertEqual( bin(F.intervalSum(2, 5)), "0b11110" )
-        F.add(4, -8)
-        self.assertEqual( bin(F.intervalSum(3, 7)), "0b1110100" )
-        self.assertEqual( bin(F.intervalSum(2, 5)), "0b10110" )
+        F = Fenwick([1, 2, 4, 8, 16, 32, 64, 128, 256, 512])
+        self.assertEqual( bin(F.intervalSum(2, 6)), "0b1111100" )
+        self.assertEqual( bin(F.intervalSum(1, 4)), "0b11110" )
+        F.add(3, -8)
+        self.assertEqual( bin(F.intervalSum(2, 6)), "0b1110100" )
+        self.assertEqual( bin(F.intervalSum(1, 4)), "0b10110" )
 
     def test_floyd_warshall(self):
-        # https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm#/media/File:Floyd-Warshall_example.svg
-        _ = float('inf')
-        weight = [[ _, _,-2, _],
-                  [ 4, _, 3, _],
-                  [ _, _, _, 2],
-                  [ _,-1, _, _]]
-        self.assertFalse(floyd_warshall(weight))
-        self.assertEqual(weight,  [[3, -1, -2, 0], [4, 3, 2, 4], [5, 1, 3, 2], [3, -1, 1, 3]])
+        for FW in [floyd_warshall, floyd_warshall2]:
+            # https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm#/media/File:Floyd-Warshall_example.svg
+            _ = float('inf')
+            weight = [[ _, _,-2, _],
+                      [ 4, _, 3, _],
+                      [ _, _, _, 2],
+                      [ _,-1, _, _]]
+            self.assertFalse(FW(weight))
+            self.assertEqual(weight,  [[3, -1, -2, 0], [4, 3, 2, 4], [5, 1, 3, 2], [3, -1, 1, 3]])
 
     def test_freivalds(self):
         A = [[2,3], [3,4]]
@@ -1260,12 +1262,12 @@ t##
         G2 = [[0], []]
         self.assertEqual(powergraph(G1, 1), G1)
         self.assertEqual(powergraph(G1, 2), G1)
-        """ 0---1---2---4
-             \ /        U
-              3
+        r""" 0---1---2---4
+              \ /        U
+               3
         """
         G1 = [[0, 1, 3], [0, 1, 2, 3], [1, 2, 4], [0, 1, 3], [2, 4]]
-        """   0---1
+        r"""  0---1
               |\ /| \    .
               |/ \|  \   .
               3---2---4
@@ -1395,14 +1397,14 @@ t##
                     return True
             return False
 
-        """  0---2---3
+        r""" 0---2---3
               \ /
                1
         """
         graph = [[1, 2], [0, 2], [0, 1, 3], [2]]
         cycle = shortest_cycle(graph)
         check(graph, cycle)
-        """  0---2---3
+        r""" 0---2---3
                 /
                1
         """
@@ -1459,7 +1461,7 @@ t##
 
     def test_subsetsum(self):
         L = [2, 4, 8, 16, 32]
-        for subset_sum in [subset_sum1, subset_sum2]:
+        for subset_sum in [subset_sum1, subset_sum2, subset_sum3]:
             self.assertEqual(subset_sum(L, 27), False)
             self.assertEqual(subset_sum(L, 28), True)
         C = [3, 5, 11]
@@ -1578,9 +1580,10 @@ t##
 
     def test_union_rectangles(self):
         R = [(0, 0, 3, 5), (1, 3, 2, 4), (0, 2, 5, 4), (4, 0, 6, 2), (7, 2, 10, 3)]
-        self.assertEqual(union_rectangles([]), 0)
-        self.assertEqual(union_rectangles([(0, 0, 5, 10)]), 50)
-        self.assertEqual(union_rectangles(R), 26)
+        for union in [union_rectangles, union_rectangles_naive, union_rectangles_fast, union_rectangles_fastest]:
+          self.assertEqual(union([]), 0)
+          self.assertEqual(union([(0, 0, 5, 10)]), 50)
+          self.assertEqual(union(R), 26)
 
     def test_windows_k_distinct(self):
         L = [("abbaca", 2), ("abbaca", 1), ("abbabacccabaabaccacab", 2)]
